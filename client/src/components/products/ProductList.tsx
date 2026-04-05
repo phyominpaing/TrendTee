@@ -1,6 +1,6 @@
 import ProductCard from "./ProductCard";
 
-const products = [
+const products = [ 
   {
     id: 1,
     name: "Black T-shirt",

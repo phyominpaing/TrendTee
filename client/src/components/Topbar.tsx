@@ -1,5 +1,6 @@
 import { ShoppingCart, User } from "lucide-react";
 import SearchBox from "../common/SearchBox";
+import { Link } from "react-router";
 
 interface TopbarProps {
   isCartOpen: boolean;
@@ -9,7 +10,9 @@ const Topbar = ({ isCartOpen, toggleCart }: TopbarProps) => {
   return (
     <main className="text-white bg-black py-6">
       <div className="max-w-6xl mx-auto flex items-center justify-between">
-        <h2 className="text-2xl font-medium">TrendTee</h2>
+        <Link to={"/"} className="text-2xl font-medium">
+          TrendTee
+        </Link>
         <SearchBox />
         <div className="flex items-center gap-4 cursor-pointer">
           <ShoppingCart onClick={toggleCart} size={24} />
@@ -24,7 +27,6 @@ const Topbar = ({ isCartOpen, toggleCart }: TopbarProps) => {
           isCartOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       />
-
     </main>
   );
 };
