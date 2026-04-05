@@ -97,12 +97,12 @@ const products = [
 const CartDrawer = ({ isCartOpen, toggleCart }: CartDrawerProps) => {
   return (
     <div
-      className={`bg-white fixed top-0 right-0 w-1/4 h-full transform transition-transform duration-300 z-50 p-4 flex flex-col ${
+      className={`bg-white fixed top-0 right-0 w-1/4 h-full transform transition-transform duration-300 z-50 p-4 flex flex-col border-l-2  border-l-gray-200 ${
         isCartOpen ? "translate-x-0" : "translate-x-full"
       }`}
     >
-      <div className="flex justify-end">
-        <X size={24} onClick={toggleCart} className="cursor-pointer " />
+      <div className="flex justify-end cursor-pointer">
+        <X size={24} onClick={toggleCart} />
       </div>
 
       <h2 className="text-xl font-semibold my-4 uppercase">Your Cart</h2>
@@ -119,7 +119,7 @@ const CartDrawer = ({ isCartOpen, toggleCart }: CartDrawerProps) => {
           />
         ))}
       </div>
-      <button className="bg-black w-full py-4 text-white rounded-md fixed bottom-1 left-0 ">
+      <button className="bg-black w-full py-4 text-white rounded-md">
         Go to Checkout
       </button>
     </div>

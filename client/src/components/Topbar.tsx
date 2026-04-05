@@ -11,7 +11,7 @@ const Topbar = ({ isCartOpen, toggleCart }: TopbarProps) => {
       <div className="max-w-6xl mx-auto flex items-center justify-between">
         <h2 className="text-2xl font-medium">TrendTee</h2>
         <SearchBox />
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 cursor-pointer">
           <ShoppingCart onClick={toggleCart} size={24} />
           <User size={24} />
         </div>
