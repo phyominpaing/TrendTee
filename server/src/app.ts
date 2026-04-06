@@ -2,6 +2,7 @@ import express, { json } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { connectDB } from "./db/dbConnect.ts";
 
 dotenv.config({
   path: ".env",
@@ -26,5 +27,6 @@ app.use(cookieParser());
 const PORT = process.env.PORT || "8000";
 app.listen(PORT, () => {
   // database connection
+  connectDB();
   console.log("Server is running :", PORT);
 });

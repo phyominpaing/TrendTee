@@ -9,8 +9,8 @@
     // See also https://aka.ms/tsconfig/module
     "module": "nodenext",
     "moduleResolution": "nodenext",
-    "target": "es6",
-    "types": [],
+    "target": "es2020",
+    "types": ["node"],
     "typeRoots": ["./node_modules/@types"],
     // For nodejs:
     // "lib": ["esnext"],
@@ -38,6 +38,8 @@
     "strict": true,
     "jsx": "react-jsx",
     "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
