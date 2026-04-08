@@ -4,6 +4,9 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { connectDB } from "./db/dbConnect.ts";
 
+import userRoutes from "./routes/user.ts";
+import errorHandler from "./middlewares/errorHandler.ts";
+
 dotenv.config({
   path: ".env",
 });
@@ -21,8 +24,11 @@ app.use(json());
 app.use(cookieParser());
 
 // routes
+app.use("/api", userRoutes);
 
 
+// error handler middleware
+app.use(errorHandler);
 
 const PORT = process.env.PORT || "8000";
 app.listen(PORT, () => {
