@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { User } from "../models/user.ts";
 import asyncHandler from "../utils/asyncHandler.ts";
+import generateToken from "../utils/generateToken.ts";
 
 // @route POST - api/register
 // @desc Register a new user
@@ -42,6 +43,8 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
 
   if (existingUser && (await existingUser.matchPassword(password))) {
     // token
+    generateToken(res, existingUser._id);
+
     res.status(200).json({
       _id: existingUser._id,
       name: existingUser.name,
