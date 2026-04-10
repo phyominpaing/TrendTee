@@ -7,17 +7,17 @@ interface Image {
 
 interface IProduct extends Document {
   name: string;
-  descripton: string;
+  description: string;
   price: number;
   instock_count: number;
   category: string;
-  size: string[];
+  sizes: string[];
   colors: string[];
   images: Image[];
-  is_newArrival: boolean;
+  is_new_arrival: boolean;
   is_feature: boolean;
   rating_count: number;
-  user: Types.ObjectId;
+  userId: Types.ObjectId;
 }
 
 const productSchema = new Schema<IProduct>(
@@ -26,7 +26,7 @@ const productSchema = new Schema<IProduct>(
       type: String,
       required: true,
     },
-    descripton: {
+    description: {
       type: String,
       required: true,
     },
@@ -42,7 +42,7 @@ const productSchema = new Schema<IProduct>(
       type: String,
       required: true,
     },
-    size: {
+    sizes: {
       type: [String],
       required: true,
     },
@@ -59,7 +59,7 @@ const productSchema = new Schema<IProduct>(
       ],
       required: true,
     },
-    is_newArrival: {
+    is_new_arrival: {
       type: Boolean,
       required: true,
     },
@@ -71,7 +71,7 @@ const productSchema = new Schema<IProduct>(
       type: Number,
       required: true,
     },
-    user: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,

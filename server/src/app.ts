@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import { connectDB } from "./db/dbConnect.ts";
 
 import userRoutes from "./routes/user.ts";
+import productRoutes from "./routes/product.ts";
 import errorHandler from "./middlewares/errorHandler.ts";
 
 dotenv.config({
@@ -25,7 +26,7 @@ app.use(cookieParser());
 
 // routes
 app.use("/api", userRoutes);
-
+app.use("/api", productRoutes);
 
 // error handler middleware
 app.use(errorHandler);
