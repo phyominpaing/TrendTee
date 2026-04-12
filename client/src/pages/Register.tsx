@@ -22,11 +22,15 @@ import { Input } from "../components/ui/input";
 import { registerSchema } from "../schema/auth";
 import { useRegisterMutation } from "@/store/slices/userApi";
 import { toast } from "sonner";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/store";
 
 type FormValues = z.infer<typeof registerSchema>;
 
 const Register = () => {
   const [registerMutation] = useRegisterMutation();
+  const userInfo = useSelector((state: RootState) => state.auth.userInfo);
   const navigate = useNavigate();
 
   const form = useForm<FormValues>({
@@ -58,6 +62,12 @@ const Register = () => {
     }
     reset();
   };
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/");
+    }
+  }, [navigate,userInfo]);
 
   return (
     <section className="relative min-h-screen overflow-hidden pt-16">

@@ -22,13 +22,17 @@ import { Input } from "../components/ui/input";
 import { loginSchema } from "../schema/auth";
 import { useLoginMutation } from "@/store/slices/userApi";
 import { toast } from "sonner";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "@/store/slices/auth";
+import type { RootState } from "@/store";
+import { useEffect } from "react";
 
 type FormValues = z.infer<typeof loginSchema>;
 
 const Login = () => {
   const [loginMutation] = useLoginMutation();
+  const userInfo = useSelector((state: RootState) => state.auth.userInfo);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -59,6 +63,12 @@ const Login = () => {
     }
     reset();
   };
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/");
+    }
+  }, [navigate, userInfo]);
 
   return (
     <section className="relative min-h-screen overflow-hidden pt-16">
@@ -144,7 +154,7 @@ const Login = () => {
                           Secure access
                         </span>
                       </div>
-                      <div className="relative">  
+                      <div className="relative">
                         <LockKeyhole className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
                         <Input
                           id="password"

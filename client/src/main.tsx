@@ -10,6 +10,8 @@ import ProductDetails from "./pages/ProductDetails.tsx";
 import { Provider } from "react-redux";
 import { store } from "./store/index.ts";
 import { Toaster } from "sonner";
+import Profile from "./pages/Profile.tsx";
+import IsLogin from "./pages/isLogin.tsx";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +34,14 @@ const router = createBrowserRouter([
         path: "/product/:id",
         element: <ProductDetails />,
       },
+      {
+        path: "/profile",
+        element: (
+          <IsLogin>
+            <Profile />
+          </IsLogin>
+        ),
+      },
     ],
   },
 ]);
@@ -39,7 +49,7 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={store}>
-      <Toaster richColors/>
+      <Toaster richColors />
       <RouterProvider router={router} />
     </Provider>
   </StrictMode>,
