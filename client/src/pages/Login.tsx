@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, LockKeyhole, Mail } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { Link, useNavigate } from "react-router";
 import z from "zod";
 
 import { Button } from "../components/ui/button";
@@ -20,10 +20,18 @@ import {
 } from "../components/ui/field";
 import { Input } from "../components/ui/input";
 import { loginSchema } from "../schema/auth";
+import { useLoginMutation } from "@/store/slices/userApi";
+import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { setUserInfo } from "@/store/slices/auth";
 
 type FormValues = z.infer<typeof loginSchema>;
 
 const Login = () => {
+  const [loginMutation] = useLoginMutation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const form = useForm<FormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -39,8 +47,16 @@ const Login = () => {
     formState: { errors, isSubmitting },
   } = form;
 
-  const onSubmit = async (values: FormValues) => {
-    console.log(values);
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    try {
+      const res = await loginMutation(data).unwrap();
+      dispatch(setUserInfo(res));
+      reset();
+      toast.success("Login successful.");
+      navigate("/");
+    } catch (error: any) {
+      toast.error(`Login failed. ${error.data.message} . Please try again.`);
+    }
     reset();
   };
 
@@ -128,7 +144,7 @@ const Login = () => {
                           Secure access
                         </span>
                       </div>
-                      <div className="relative">
+                      <div className="relative">  
                         <LockKeyhole className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
                         <Input
                           id="password"

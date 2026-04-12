@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, LockKeyhole, Mail, User } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { Link, useNavigate } from "react-router";
 import z from "zod";
 
 import { Button } from "../components/ui/button";
@@ -20,14 +20,19 @@ import {
 } from "../components/ui/field";
 import { Input } from "../components/ui/input";
 import { registerSchema } from "../schema/auth";
+import { useRegisterMutation } from "@/store/slices/userApi";
+import { toast } from "sonner";
 
 type FormValues = z.infer<typeof registerSchema>;
 
 const Register = () => {
+  const [registerMutation] = useRegisterMutation();
+  const navigate = useNavigate();
+
   const form = useForm<FormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      username: "",
+      name: "",
       email: "",
       password: "",
     },
@@ -40,8 +45,17 @@ const Register = () => {
     formState: { errors, isSubmitting },
   } = form;
 
-  const onSubmit = async (values: FormValues) => {
-    console.log(values);
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    try {
+      await registerMutation(data).unwrap();
+      reset();
+      toast.success("Registration successful.");
+      navigate("/login");
+    } catch (error: any) {
+      toast.error(
+        `Registration failed. ${error.data.message} . Please try again.`,
+      );
+    }
     reset();
   };
 
@@ -97,22 +111,22 @@ const Register = () => {
               <CardContent className="px-6 pb-8 sm:px-8">
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <FieldGroup className="space-y-2">
-                    <Field data-invalid={!!errors.username}>
-                      <FieldLabel htmlFor="username" className="text-slate-700">
-                        Username
+                    <Field data-invalid={!!errors.name}>
+                      <FieldLabel htmlFor="name" className="text-slate-700">
+                        Name
                       </FieldLabel>
                       <div className="relative">
                         <User className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
                         <Input
-                          id="username"
+                          id="name"
                           type="text"
                           placeholder="Enter your username"
                           className="h-11 rounded-xl border-slate-200 bg-white pl-10 shadow-sm shadow-slate-950/5"
-                          aria-invalid={!!errors.username}
-                          {...register("username")}
+                          aria-invalid={!!errors.name}
+                          {...register("name")}
                         />
                       </div>
-                      <FieldError errors={[errors.username]} />
+                      <FieldError errors={[errors.name]} />
                     </Field>
 
                     <Field data-invalid={!!errors.email}>
@@ -141,7 +155,6 @@ const Register = () => {
                         >
                           Password
                         </FieldLabel>
-                       
                       </div>
                       <div className="relative">
                         <LockKeyhole className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
