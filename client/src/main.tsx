@@ -11,7 +11,7 @@ import { Provider } from "react-redux";
 import { store } from "./store/index.ts";
 import { Toaster } from "sonner";
 import Profile from "./pages/Profile.tsx";
-import IsLogin from "./pages/isLogin.tsx";
+import IsLogin from "./pages/IsLogin.tsx";
 
 const router = createBrowserRouter([
   {
