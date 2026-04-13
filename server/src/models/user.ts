@@ -6,15 +6,27 @@ interface IUser extends Document {
   email: string;
   password: string;
   role: "customer" | "admin";
-  matchPassword(enteredPassword : string) : boolean;
+  avatar?: {
+    url: string;
+    public_alt: string;
+  };
+  matchPassword(enteredPassword: string): boolean;
 }
 
 const userSchema = new Schema<IUser>(
   {
-    name: { type: String, required: true }, 
+    name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    role: { type: String, enum: ["customer", "admin"] , default : "customer"},
+    role: { type: String, enum: ["customer", "admin"], default: "customer" },
+    avatar: {
+      type: [
+        {
+          url: String,
+          public_alt: String,
+        },
+      ],
+    },
   },
   { timestamps: true },
 );

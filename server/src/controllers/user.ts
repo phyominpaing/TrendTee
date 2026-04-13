@@ -2,6 +2,8 @@ import type { Request, Response } from "express";
 import { User } from "../models/user.ts";
 import asyncHandler from "../utils/asyncHandler.ts";
 import generateToken from "../utils/generateToken.ts";
+import type { AuthRequest } from "../middlewares/authMiddleware.ts";
+import { uploadSingleImage } from "../utils/cloudinary.ts";
 
 // @route POST - api/register
 // @desc Register a new user
@@ -69,3 +71,24 @@ export const logoutUser = asyncHandler(async (req: Request, res: Response) => {
 
   res.status(200).json({ message: "User logged out successfully." });
 });
+
+// @route POST - api/upload
+// @desc Update or Upload user avatar
+// @access Private
+export const uploadAvatar = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const { user } = req;
+    const { image_url } = req.body;
+
+    const response = await uploadSingleImage(image_url, "trendtee.com/avatar");
+
+    await User.findByIdAndUpdate(user?._id, {
+      avatar: {
+        url: response.image_url,
+        public_alt: response.public_alt,
+      },
+    });
+
+    res.status(200).json({ message: "Profile Uploaded Successfully." });
+  },
+);
