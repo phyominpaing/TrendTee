@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, LockKeyhole, Mail, User } from "lucide-react";
+import { ArrowLeft, ArrowRight, LockKeyhole, Mail, User } from "lucide-react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import z from "zod";
@@ -67,7 +67,7 @@ const Register = () => {
     if (userInfo) {
       navigate("/");
     }
-  }, [navigate,userInfo]);
+  }, [navigate, userInfo]);
 
   return (
     <section className="relative min-h-screen overflow-hidden pt-16">
@@ -108,9 +108,19 @@ const Register = () => {
                   TrendTee
                 </div>
                 <div className="space-y-1">
-                  <CardTitle className="text-3xl font-semibold tracking-tight text-slate-900">
-                    Create account
-                  </CardTitle>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-3xl font-semibold tracking-tight text-slate-900">
+                      Create an account
+                    </CardTitle>
+
+                    <Link
+                      className="group flex items-center gap-2 border border-slate-200 bg-slate-50 hover:bg-slate-100 px-3 py-1 rounded-2xl text-slate-500"
+                      to={"/"}
+                    >
+                      <ArrowLeft className="size-5 transition-transform duration-200 group-hover:-translate-x-1" />
+                      <span className="text-xs">Back to Home</span>
+                    </Link>
+                  </div>
                   <CardDescription className="max-w-md text-sm leading-6 text-slate-500">
                     Enter your details to unlock a faster and more personalized
                     shopping experience.

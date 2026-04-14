@@ -1,5 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, LockKeyhole, Mail } from "lucide-react";
+import {
+  AlignRight,
+  ArrowBigLeftDash,
+  ArrowBigRight,
+  ArrowLeft,
+  ArrowLeftFromLine,
+  ArrowRight,
+  LockKeyhole,
+  Mail,
+} from "lucide-react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import z from "zod";
@@ -71,7 +80,7 @@ const Login = () => {
   }, [navigate, userInfo]);
 
   return (
-    <section className="relative min-h-screen overflow-hidden pt-16">
+    <section className="relative min-h-screen overflow-hidden flex justify-center items-center">
       <div className="mx-auto flex  w-full max-w-5xl items-center justify-center">
         <Card className="grid w-full overflow-hidden border border-white/60 bg-white/85 shadow-2xl shadow-slate-900/10 backdrop-blur xl:grid-cols-[1.05fr_0.95fr]">
           {/* Left Side */}
@@ -112,9 +121,19 @@ const Login = () => {
                   TrendTee
                 </div>
                 <div className="space-y-1">
-                  <CardTitle className="text-3xl font-semibold tracking-tight text-slate-900">
-                    Welcome back
-                  </CardTitle>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-3xl font-semibold tracking-tight text-slate-900">
+                      Welcome back
+                    </CardTitle>
+
+                    <Link
+                      className="group flex items-center gap-2 border border-slate-200 bg-slate-50 hover:bg-slate-100 px-3 py-1 rounded-2xl text-slate-500"
+                      to={"/"}
+                    >
+                      <ArrowLeft className="size-5 transition-transform duration-200 group-hover:-translate-x-1" />
+                      <span className="text-xs">Back to Home</span>
+                    </Link>
+                  </div>
                   <CardDescription className="max-w-md text-sm leading-6 text-slate-500">
                     Enter your email and password to access your dashboard.
                   </CardDescription>
@@ -172,11 +191,11 @@ const Login = () => {
                   <Button
                     type="submit"
                     size="lg"
-                    className="h-11 w-full rounded-xl bg-slate-900 text-white hover:bg-slate-800"
+                    className="group h-11 w-full rounded-xl bg-slate-900 text-white hover:bg-slate-800"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? "Signing in..." : "Sign in"}
-                    <ArrowRight className="size-4" />
+                    <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
                   </Button>
                 </form>
 
