@@ -21,7 +21,7 @@ app.use(
   }),
 );
 
-app.use(json());
+app.use(json({ limit: "10mb" }));
 app.use(cookieParser());
 
 // routes

@@ -1,3 +1,4 @@
+import type { User } from "@/types/user";
 import { apiSlice } from "./api";
 
 interface loginInput {
@@ -7,6 +8,10 @@ interface loginInput {
 
 interface registerInput extends loginInput {
   name: string;
+}
+
+interface avatarUploadInput {
+  image_url: string;
 }
 
 export const userApiSlice = apiSlice.injectEndpoints({
@@ -34,7 +39,28 @@ export const userApiSlice = apiSlice.injectEndpoints({
         credentials: "include",
       }),
     }),
+    currentUser: builder.query<User, void>({
+      query: () => ({
+        url: "/me",
+        method: "GET",
+        credentials: "include",
+      }),
+    }),
+    uploadAvatar: builder.mutation({
+      query: (data: avatarUploadInput) => ({
+        url: "/upload",
+        method: "POST",
+        body: data,
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation , useLogoutMutation } = userApiSlice;
+export const {
+  useRegisterMutation,
+  useLoginMutation,
+  useLogoutMutation,
+  useCurrentUserQuery,
+  useUploadAvatarMutation,
+} = userApiSlice;

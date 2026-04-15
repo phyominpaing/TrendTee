@@ -3,7 +3,7 @@ import { User } from "../models/user.ts";
 import asyncHandler from "../utils/asyncHandler.ts";
 import generateToken from "../utils/generateToken.ts";
 import type { AuthRequest } from "../middlewares/authMiddleware.ts";
-import { uploadSingleImage } from "../utils/cloudinary.ts";
+import { deleteImage, uploadSingleImage } from "../utils/cloudinary.ts";
 
 // @route POST - api/register
 // @desc Register a new user
@@ -80,6 +80,12 @@ export const uploadAvatar = asyncHandler(
     const { user } = req;
     const { image_url } = req.body;
 
+    const userDoc = await User.findById(user?._id).select("-password");
+
+    if (userDoc?.avatar?.url) {
+      await deleteImage(userDoc.avatar.public_alt);
+    }
+
     const response = await uploadSingleImage(image_url, "trendtee.com/avatar");
 
     await User.findByIdAndUpdate(user?._id, {
@@ -90,5 +96,19 @@ export const uploadAvatar = asyncHandler(
     });
 
     res.status(200).json({ message: "Profile Uploaded Successfully." });
+  },
+);
+
+// @route GET - api/me
+// @desc Get Login User's information
+// @access Private
+
+export const getUserInfo = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const { user } = req;
+
+    const userDoc = await User.findById(user?._id).select("-password");
+
+    res.status(200).json(userDoc);
   },
 );
