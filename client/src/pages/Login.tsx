@@ -1,10 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  AlignRight,
-  ArrowBigLeftDash,
-  ArrowBigRight,
   ArrowLeft,
-  ArrowLeftFromLine,
   ArrowRight,
   LockKeyhole,
   Mail,

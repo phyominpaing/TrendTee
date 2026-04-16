@@ -49,9 +49,6 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
 
     res.status(200).json({
       _id: existingUser._id,
-      name: existingUser.name,
-      email: existingUser.email,
-      role: existingUser.role,
     });
   } else {
     res.status(401);

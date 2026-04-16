@@ -1,6 +1,6 @@
 import { LogIn, ShoppingCart, User } from "lucide-react";
 import SearchBox from "../common/SearchBox";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/store";
 
@@ -25,11 +25,14 @@ const Topbar = ({ isCartOpen, toggleCart }: TopbarProps) => {
   const [logoutMutation, { isLoading }] = useLogoutMutation();
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const logoutHandler = async () => {
     try {
       await logoutMutation({}).unwrap();
       dispatch(clearUserInfo());
+      toast.success("Logout successful.");
+      navigate("/");
     } catch (error) {
       toast.error("Logout failed. Please try again.");
     }
