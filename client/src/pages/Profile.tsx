@@ -1,4 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/avatar";
+import EmailUpdateForm from "@/components/profile/EmailUpdateForm";
+import UsernameUpdateForm from "@/components/profile/UsernameUpdateForm";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -7,12 +9,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import {
   useCurrentUserQuery,
   useUploadAvatarMutation,
 } from "@/store/slices/userApi";
-import { Camera, Mail, RefreshCcw, ShieldCheck, User2 } from "lucide-react";
+import { Camera, RefreshCcw, ShieldCheck } from "lucide-react";
 import { useState, type ChangeEvent } from "react";
 import { toast } from "sonner";
 
@@ -61,6 +62,10 @@ const Profile = () => {
       console.log(error);
       toast.error("Failed to upload profile image. Please try again.");
     }
+  };
+
+  const profileInfoUpdateHandler = () => {
+    toast.info("Name/email update API is not connected yet.");
   };
 
   if (isGetting) {
@@ -179,30 +184,12 @@ const Profile = () => {
 
           <div className="space-y-5">
             <div className="grid gap-5 md:grid-cols-2">
-              <div className="space-y-2">
-                <label className="inline-flex items-center gap-2 text-sm font-medium text-slate-600">
-                  <User2 className="size-4 text-slate-400" />
-                  Full name
-                </label>
-                <Input
-                  value={user.name}
-                  readOnly
-                  className="h-11 rounded-xl border-slate-200 bg-white"
-                />
-              </div>
+              <UsernameUpdateForm name={user.name} />
 
-              <div className="space-y-2">
-                <label className="inline-flex items-center gap-2 text-sm font-medium text-slate-600">
-                  <Mail className="size-4 text-slate-400" />
-                  Email address
-                </label>
-                <Input
-                  value={user.email}
-                  readOnly
-                  className="h-11 rounded-xl border-slate-200 bg-white"
-                />
-              </div>
+              <EmailUpdateForm email={user.email} />
             </div>
+
+
 
             <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
               <div className="flex items-start gap-3">
@@ -233,6 +220,16 @@ const Profile = () => {
                   {user.role === "admin" ? "Administrator" : "Customer"}
                 </p>
               </div>
+            </div>
+
+                        <div className="flex justify-end">
+              <Button
+                type="button"
+                onClick={profileInfoUpdateHandler}
+                className="h-10 rounded-xl bg-slate-900 px-5 text-white hover:bg-slate-800"
+              >
+                Update Profile
+              </Button>
             </div>
           </div>
         </CardContent>
