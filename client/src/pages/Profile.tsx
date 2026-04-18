@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/avatar";
 import EmailUpdateForm from "@/components/profile/EmailUpdateForm";
-import UsernameUpdateForm from "@/components/profile/UsernameUpdateForm";
+import NameUpdateForm from "@/components/profile/NameUpdateForm";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -14,8 +14,14 @@ import {
   useUploadAvatarMutation,
 } from "@/store/slices/userApi";
 import { Camera, RefreshCcw, ShieldCheck } from "lucide-react";
-import { useState, type ChangeEvent } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+
+interface ProfileFormValues {
+  name: string;
+  email: string;
+}
 
 const Profile = () => {
   const {
@@ -64,9 +70,30 @@ const Profile = () => {
     }
   };
 
-  const profileInfoUpdateHandler = () => {
-    toast.info("Name/email update API is not connected yet.");
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
+  } = useForm<ProfileFormValues>({
+    defaultValues: {
+      name: user?.name || "",
+      email: user?.email || "",
+    },
+  });
+
+  const profileInfoUpdateHandler = (data: ProfileFormValues) => {
+    console.log( data);
   };
+
+  useEffect(() => {
+    if (user) {
+      reset({
+        name: user.name,
+        email: user.email,
+      });
+    }
+  }, [user, reset]);
 
   if (isGetting) {
     return (
@@ -182,14 +209,15 @@ const Profile = () => {
             </Button>
           </div>
 
-          <div className="space-y-5">
+          <form
+            onSubmit={handleSubmit(profileInfoUpdateHandler)}
+            className="space-y-5"
+          >
             <div className="grid gap-5 md:grid-cols-2">
-              <UsernameUpdateForm name={user.name} />
+              <NameUpdateForm register={register} />
 
-              <EmailUpdateForm email={user.email} />
+              <EmailUpdateForm register={register} />
             </div>
-
-
 
             <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
               <div className="flex items-start gap-3">
@@ -222,16 +250,16 @@ const Profile = () => {
               </div>
             </div>
 
-                        <div className="flex justify-end">
+            <div className="flex justify-end">
               <Button
-                type="button"
-                onClick={profileInfoUpdateHandler}
+                type="submit"
+                disabled={isSubmitting}
                 className="h-10 rounded-xl bg-slate-900 px-5 text-white hover:bg-slate-800"
               >
                 Update Profile
               </Button>
             </div>
-          </div>
+          </form>
         </CardContent>
       </Card>
     </section>
