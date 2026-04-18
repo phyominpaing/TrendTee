@@ -1,7 +1,12 @@
 import z from "zod";
 
-export const emailUpdateSchema = z.object({
-  email: z.string().email({
-    message: "Please enter a valid email",
-  }),
+export const profileUpdateSchema = z.object({
+  name: z
+    .string()
+    .min(3, "Name must be at least 3 characters")
+    .max(50, "Name must not exceed 50 characters"),
+
+  email: z
+    .string()
+    .email("Please enter a valid email address"),
 });

@@ -9,19 +9,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { profileUpdateSchema } from "@/schema/user";
 import {
   useCurrentUserQuery,
   useUploadAvatarMutation,
 } from "@/store/slices/userApi";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Camera, RefreshCcw, ShieldCheck } from "lucide-react";
 import { useEffect, useState, type ChangeEvent } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import type z from "zod";
 
-interface ProfileFormValues {
-  name: string;
-  email: string;
-}
+type ProfileFormValues = z.infer<typeof profileUpdateSchema>;
 
 const Profile = () => {
   const {
@@ -33,6 +33,7 @@ const Profile = () => {
   const [avatar, setAvatar] = useState<string | null>(null);
   const [uploadAvatarMutation, { isLoading }] = useUploadAvatarMutation();
 
+  // Upload profile image
   const imageOnChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -53,6 +54,7 @@ const Profile = () => {
     reader.readAsDataURL(file);
   };
 
+  // Upload profile image
   const avatarUploadHandler = async () => {
     if (!avatar) {
       toast.error("Please select your profile image first.");
@@ -74,16 +76,17 @@ const Profile = () => {
     register,
     handleSubmit,
     reset,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
   } = useForm<ProfileFormValues>({
+    resolver: zodResolver(profileUpdateSchema),
     defaultValues: {
-      name: user?.name || "",
-      email: user?.email || "",
+      name: "",
+      email: "",
     },
   });
 
   const profileInfoUpdateHandler = (data: ProfileFormValues) => {
-    console.log( data);
+    console.log(data);
   };
 
   useEffect(() => {
@@ -214,9 +217,9 @@ const Profile = () => {
             className="space-y-5"
           >
             <div className="grid gap-5 md:grid-cols-2">
-              <NameUpdateForm register={register} />
+              <NameUpdateForm register={register} error={errors.name} />
 
-              <EmailUpdateForm register={register} />
+              <EmailUpdateForm register={register} error={errors.email} />
             </div>
 
             <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
