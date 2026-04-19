@@ -18,3 +18,15 @@ export const loginValidator = [
 export const uploadImageValidator = [
     body("image_url").notEmpty().withMessage("Image should not be empty."),
 ]
+
+export const userInfoUpdateValidator = [
+  body("name")
+    .notEmpty()
+    .withMessage("Name is required")
+    .isLength({ min: 3 })
+    .withMessage("Name must be at least 3 characters"),
+
+  body("email")
+    .isEmail()
+    .withMessage("Valid email is required"),
+];

@@ -76,7 +76,7 @@ const Profile = () => {
     register,
     handleSubmit,
     reset,
-    formState: { isSubmitting, errors },
+    formState: { isSubmitting, errors, isDirty },
   } = useForm<ProfileFormValues>({
     resolver: zodResolver(profileUpdateSchema),
     defaultValues: {
@@ -256,7 +256,7 @@ const Profile = () => {
             <div className="flex justify-end">
               <Button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={!isDirty || isSubmitting}
                 className="h-10 rounded-xl bg-slate-900 px-5 text-white hover:bg-slate-800"
               >
                 Update Profile

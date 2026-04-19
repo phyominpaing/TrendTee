@@ -4,6 +4,7 @@ import {
   loginUser,
   logoutUser,
   registerUser,
+  updateUserProfile,
   uploadAvatar,
 } from "../controllers/user.ts";
 import { protect } from "../middlewares/authMiddleware.ts";
@@ -11,6 +12,7 @@ import {
   loginValidator,
   registerValidator,
   uploadImageValidator,
+  userInfoUpdateValidator,
 } from "../validators/user.ts";
 import { validateRequest } from "../middlewares/validateRequest.ts";
 
@@ -29,5 +31,13 @@ router.post(
 );
 
 router.get("/me", protect, getUserInfo);
+
+router.post(
+  "/user/update",
+  protect,
+  userInfoUpdateValidator,
+  validateRequest,
+  updateUserProfile,
+);
 
 export default router;

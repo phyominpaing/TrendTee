@@ -99,7 +99,6 @@ export const uploadAvatar = asyncHandler(
 // @route GET - api/me
 // @desc Get Login User's information
 // @access Private
-
 export const getUserInfo = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     const { user } = req;
@@ -107,5 +106,72 @@ export const getUserInfo = asyncHandler(
     const userDoc = await User.findById(user?._id).select("-password");
 
     res.status(200).json(userDoc);
+  },
+);
+
+// // @route GET - api/update-email
+// // @desc Update Login User's email
+// // @access Private | User
+// export const updateEmailAddress = asyncHandler(
+//   async (req: AuthRequest, res: Response) => {
+//     const { user } = req;
+//     const { newEmail } = req.body;
+
+//     const existingUserEmail = await User.findOne({ email: newEmail });
+
+//     if (existingUserEmail) {
+//       res.status(400);
+//       throw new Error("User already exists with this email address");
+//     }
+
+//     await User.findByIdAndUpdate(user?._id, {
+//       email: newEmail,
+//     });
+
+//     res.status(200).json({ message: "Updated Successfully." });
+//   },
+// );
+
+// @route PATCH - api/user/update
+// @desc Update user's name and email
+// @access Private
+
+export const updateUserProfile = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const { user } = req;
+    const { name, email } = req.body;
+
+    // 🔹 Validate input
+    if (!name || name.length < 3) {
+      res.status(400);
+      throw new Error("Name must be at least 3 characters.");
+    }
+
+    if (!email || !email.includes("@")) {
+      res.status(400);
+      throw new Error("Invalid email format.");
+    }
+
+    // 🔹 Check email already used by another user
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser && existingUser._id.toString() !== user?._id.toString()) {
+      res.status(400);
+      throw new Error("Email already used by another user.");
+    }
+
+    // 🔹 Update user
+    const updatedUser = await User.findByIdAndUpdate(user?._id, {
+      name,
+      email,
+    });
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user: {
+        name: updatedUser?.name,
+        email: updatedUser?.email,
+      },
+    });
   },
 );
