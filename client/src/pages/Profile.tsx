@@ -12,6 +12,7 @@ import {
 import { profileUpdateSchema } from "@/schema/user";
 import {
   useCurrentUserQuery,
+  useUpdateUserProfileInfoMutation,
   useUploadAvatarMutation,
 } from "@/store/slices/userApi";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -31,7 +32,10 @@ const Profile = () => {
     refetch,
   } = useCurrentUserQuery();
   const [avatar, setAvatar] = useState<string | null>(null);
+  // Mutations React Query
   const [uploadAvatarMutation, { isLoading }] = useUploadAvatarMutation();
+  const [updateUserProfile, { isLoading: isUpdating }] =
+    useUpdateUserProfileInfoMutation();
 
   // Upload profile image
   const imageOnChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -54,7 +58,6 @@ const Profile = () => {
     reader.readAsDataURL(file);
   };
 
-  // Upload profile image
   const avatarUploadHandler = async () => {
     if (!avatar) {
       toast.error("Please select your profile image first.");
@@ -72,6 +75,7 @@ const Profile = () => {
     }
   };
 
+  // Form handling
   const {
     register,
     handleSubmit,
@@ -85,8 +89,15 @@ const Profile = () => {
     },
   });
 
-  const profileInfoUpdateHandler = (data: ProfileFormValues) => {
-    console.log(data);
+  // Update profile info
+  const profileInfoUpdateHandler = async (data: ProfileFormValues) => {
+    try {
+      await updateUserProfile(data).unwrap();
+      toast.success("Profile info updated successfully.");
+      refetch();
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Update failed");
+    }
   };
 
   useEffect(() => {
@@ -256,10 +267,10 @@ const Profile = () => {
             <div className="flex justify-end">
               <Button
                 type="submit"
-                disabled={!isDirty || isSubmitting}
-                className="h-10 rounded-xl bg-slate-900 px-5 text-white hover:bg-slate-800"
+                disabled={!isDirty || isSubmitting || isUpdating}
+                className="h-10 rounded-xl bg-slate-900 px-5 text-white hover:bg-slate-800 disabled:opacity-50"
               >
-                Update Profile
+                {isUpdating ? "Updating..." : "Update Profile"}
               </Button>
             </div>
           </form>
