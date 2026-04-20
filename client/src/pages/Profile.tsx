@@ -160,7 +160,7 @@ const Profile = () => {
   return (
     <section className="mt-6">
       <Card className="overflow-hidden border border-white/60 bg-white/90 shadow-2xl shadow-slate-900/10">
-        <CardHeader className="border-b border-slate-100 bg-linear-to-r from-slate-50 via-white to-slate-50 px-6 py-6 md:px-8">
+        <CardHeader className="border-b border-slate-200 bg-linear-to-r from-slate-50 via-white to-slate-50 px-6 py-6 md:px-8">
           <CardTitle className="text-2xl font-semibold tracking-tight text-slate-900">
             Account Settings
           </CardTitle>
@@ -229,12 +229,12 @@ const Profile = () => {
           >
             <div className="grid gap-5 md:grid-cols-2">
               <NameUpdateForm register={register} error={errors.name} />
-
+                  
               <EmailUpdateForm register={register} error={errors.email} />
             </div>
 
             <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-              <div className="flex items-start gap-3">
+              <div className="flex items-center  gap-3">
                 <div className="rounded-xl bg-white p-2 text-slate-600 shadow-sm">
                   <ShieldCheck className="size-5" />
                 </div>

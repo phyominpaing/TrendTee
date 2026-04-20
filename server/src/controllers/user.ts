@@ -4,6 +4,7 @@ import asyncHandler from "../utils/asyncHandler.ts";
 import generateToken from "../utils/generateToken.ts";
 import type { AuthRequest } from "../middlewares/authMiddleware.ts";
 import { deleteImage, uploadSingleImage } from "../utils/cloudinary.ts";
+import bcrypt from "bcrypt";
 
 // @route POST - api/register
 // @desc Register a new user
@@ -172,6 +173,47 @@ export const updateUserProfile = asyncHandler(
         name: updatedUser?.name,
         email: updatedUser?.email,
       },
+    });
+  },
+);
+
+// @route POST - api/update-password
+// @desc Update user's password
+// @access Private | User
+export const updatePassword = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const { user } = req;
+    const { oldPassword, newPassword } = req.body;
+
+    // 🔹 Validate input
+    if (!oldPassword || !newPassword || newPassword.length < 6) {
+      res.status(400);
+      throw new Error("Password must be at least 6 characters.");
+    }
+
+    const existingUser = await User.findById(user?._id).select("+password");
+
+    if (!existingUser) {
+      res.status(400);
+      throw new Error("User not found.");
+    }
+
+    const isPasswordMatched = await bcrypt.compare(
+      oldPassword,
+      existingUser.password!,
+    );
+
+    if (!isPasswordMatched) {
+      res.status(400);
+      throw new Error("Old password is incorrect.");
+    }
+    
+    // 🔹 Update password (IMPORTANT: use save for hashing)
+    existingUser.password = newPassword;
+    await existingUser.save();
+
+    res.status(200).json({
+      message: "Password updated successfully",
     });
   },
 );
