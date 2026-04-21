@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { profileUpdateSchema } from "@/schema/user";
 import {
   useCurrentUserQuery,
@@ -16,7 +17,7 @@ import {
   useUploadAvatarMutation,
 } from "@/store/slices/userApi";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Camera, RefreshCcw, ShieldCheck } from "lucide-react";
+import { Camera, RefreshCcw, ShieldCheck, X } from "lucide-react";
 import { useEffect, useState, type ChangeEvent } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -170,8 +171,8 @@ const Profile = () => {
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="grid gap-8 p-6 md:p-8 lg:grid-cols-[280px_1fr]">
-          <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-6">
+        <CardContent className="grid items-start gap-8 p-6 md:p-8 lg:grid-cols-[280px_1fr]">
+          <div className="self-start rounded-2xl border border-slate-200 bg-slate-50/80 p-6">
             <div className="inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium tracking-[0.18em] uppercase text-slate-500">
               Profile
             </div>
@@ -213,14 +214,24 @@ const Profile = () => {
               Max profile image size: 10MB
             </p>
 
-            <Button
-              type="button"
-              onClick={avatarUploadHandler}
-              disabled={!avatar || isLoading}
-              className={`mt-5 h-10 w-full rounded-xl bg-slate-900 text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60 ${isLoading ? "animate-pulse" : ""} ${!avatar ? "hidden" : ""}`}
-            >
-              Upload
-            </Button>
+            <div className={`relative mt-5 ${!avatar ? "hidden" : ""}`}>
+              {/* <Button
+                type="button"
+                onClick={() => setAvatar(null)}
+                className="absolute -top-2.5 -right-1 z-10 h-6 w-6 rounded-full border-2 border-slate-200 bg-white p-0 text-slate-600 shadow-md hover:bg-slate-100 hover:text-slate-900"
+              >
+                <X className="size-3" />
+              </Button> */}
+
+              <Button
+                type="button"
+                onClick={avatarUploadHandler}
+                disabled={!avatar || isLoading}
+                className={`h-10 w-full rounded-xl bg-slate-900 text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60 ${isLoading ? "animate-pulse" : ""}`}
+              >
+                Upload
+              </Button>
+            </div>
           </div>
 
           <form
@@ -229,8 +240,42 @@ const Profile = () => {
           >
             <div className="grid gap-5 md:grid-cols-2">
               <NameUpdateForm register={register} error={errors.name} />
-                  
+
               <EmailUpdateForm register={register} error={errors.email} />
+
+              <div className="space-y-2 md:col-span-2">
+                <label
+                  htmlFor="old-password"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-slate-600"
+                >
+                  Old password
+                </label>
+                <Input
+                  id="old-password"
+                  name="oldPassword"
+                  type="password"
+                  autoComplete="current-password"
+                  placeholder="Enter your current password"
+                  className="h-11 rounded-xl border-slate-200 bg-white"
+                />
+              </div>
+
+              <div className="space-y-2 md:col-span-2">
+                <label
+                  htmlFor="new-password"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-slate-600"
+                >
+                  New password
+                </label>
+                <Input
+                  id="new-password"
+                  name="newPassword"
+                  type="password"
+                  autoComplete="new-password"
+                  placeholder="Enter a new password"
+                  className="h-11 rounded-xl border-slate-200 bg-white"
+                />
+              </div>
             </div>
 
             <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
