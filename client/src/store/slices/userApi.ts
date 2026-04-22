@@ -19,6 +19,12 @@ interface userProfileUpdateInput {
   email: string;
 }
 
+interface userPasswordUpdateInput {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation({
@@ -70,6 +76,14 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
+    updatePassword : builder.mutation({
+      query: (data: userPasswordUpdateInput) => ({
+        url: "/update-password",
+        method: "POST",
+        body: data,
+        credentials: "include",
+      }),
+    })
   }),
 });
 
@@ -80,4 +94,5 @@ export const {
   useCurrentUserQuery,
   useUploadAvatarMutation,
   useUpdateUserProfileInfoMutation,
+  useUpdatePasswordMutation
 } = userApiSlice;
