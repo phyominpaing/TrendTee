@@ -114,7 +114,7 @@ const Profile = () => {
           confirmPassword: data.confirmPassword,
         }).unwrap();
 
-        toast.success("Password updated successfully");
+        // toast.success("Password updated successfully");
       }
 
       toast.success("Profile updated successfully");

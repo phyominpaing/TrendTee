@@ -217,3 +217,14 @@ export const updatePassword = asyncHandler(
     });
   },
 );
+
+
+// @route POST - api/forget-password
+// @desc  Send email to reset user's password
+// @access Private | User
+export const sendForgetPasswordEmail = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const { email } = req.body;
+    
+  }
+)
