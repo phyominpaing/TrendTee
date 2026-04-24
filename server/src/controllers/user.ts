@@ -5,6 +5,8 @@ import generateToken from "../utils/generateToken.ts";
 import type { AuthRequest } from "../middlewares/authMiddleware.ts";
 import { deleteImage, uploadSingleImage } from "../utils/cloudinary.ts";
 import bcrypt from "bcrypt";
+import { forgotPasswordEmailTemplate } from "../utils/emailTemplate.ts";
+import { sendEmail } from "../utils/sendEmail.ts";
 
 // @route POST - api/register
 // @desc Register a new user
@@ -207,7 +209,7 @@ export const updatePassword = asyncHandler(
       res.status(400);
       throw new Error("Old password is incorrect.");
     }
-    
+
     // 🔹 Update password (IMPORTANT: use save for hashing)
     existingUser.password = newPassword;
     await existingUser.save();
@@ -218,13 +220,37 @@ export const updatePassword = asyncHandler(
   },
 );
 
-
-// @route POST - api/forget-password
+// @route POST - api/forgot-password
 // @desc  Send email to reset user's password
 // @access Private | User
-export const sendForgetPasswordEmail = asyncHandler(
+export const sendForgotPasswordEmail = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     const { email } = req.body;
-    
-  }
-)
+
+    const existingUser = new User();
+    const token = await existingUser.generatePasswordResetToken();
+    await existingUser.save();
+
+    const resetPasswordUrl = `${process.env.CLIENT_URL}/reset-password/${token}`;
+    const body = forgotPasswordEmailTemplate(resetPasswordUrl);
+
+    try {
+      await sendEmail({
+        receiver_mail: email,
+        subject: "Reset Password",
+        body: body,
+      });
+    } catch (error) {
+      existingUser.resetPasswordToken = undefined;
+      existingUser.resetPasswordExpire = undefined;
+      await existingUser.save();
+
+      res.status(500);
+      throw new Error("Email could not be sent.");
+    } 
+
+    res.status(200).json({
+      message: "Reset Password Email sent successfully.",
+    });
+  },
+);

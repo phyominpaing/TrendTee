@@ -14,6 +14,7 @@ interface IUser extends Document {
   resetPasswordToken?: string;
   resetPasswordExpire?: string;
   matchPassword(enteredPassword: string): boolean;
+  generatePasswordResetToken(): string;
 }
 
 const userSchema = new Schema<IUser>(

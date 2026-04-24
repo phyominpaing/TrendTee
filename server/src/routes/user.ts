@@ -4,6 +4,7 @@ import {
   loginUser,
   logoutUser,
   registerUser,
+  sendForgotPasswordEmail,
   updatePassword,
   updateUserProfile,
   uploadAvatar,
@@ -49,5 +50,7 @@ router.post(
   validateRequest,
   updatePassword,
 );
+
+router.post("/forgot-password", protect, sendForgotPasswordEmail);
 
 export default router;
