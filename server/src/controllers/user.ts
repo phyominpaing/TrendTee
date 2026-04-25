@@ -5,7 +5,7 @@ import generateToken from "../utils/generateToken.ts";
 import type { AuthRequest } from "../middlewares/authMiddleware.ts";
 import { deleteImage, uploadSingleImage } from "../utils/cloudinary.ts";
 import bcrypt from "bcrypt";
-import { forgotPasswordEmailTemplate } from "../utils/emailTemplate.ts";
+import { forgetPasswordEmailTemplate } from "../utils/emailTemplate.ts";
 import { sendEmail } from "../utils/sendEmail.ts";
 
 // @route POST - api/register
@@ -223,20 +223,28 @@ export const updatePassword = asyncHandler(
 // @route POST - api/forgot-password
 // @desc  Send email to reset user's password
 // @access Private | User
+
 export const sendForgotPasswordEmail = asyncHandler(
   async (req: AuthRequest, res: Response) => {
-    const { email } = req.body;
+    const { user } = req;
+    const {email} = req.body;
 
-    const existingUser = new User();
+    const existingUser = await User.findOne({ email });
+
+    if (!existingUser) {
+      res.status(400);
+      throw new Error("User not found.");
+    }
+
     const token = await existingUser.generatePasswordResetToken();
     await existingUser.save();
 
     const resetPasswordUrl = `${process.env.CLIENT_URL}/reset-password/${token}`;
-    const body = forgotPasswordEmailTemplate(resetPasswordUrl);
+    const body = forgetPasswordEmailTemplate(resetPasswordUrl);
 
     try {
       await sendEmail({
-        receiver_mail: email,
+        receiver_mail: user?.email!,
         subject: "Reset Password",
         body: body,
       });
@@ -247,10 +255,43 @@ export const sendForgotPasswordEmail = asyncHandler(
 
       res.status(500);
       throw new Error("Email could not be sent.");
-    } 
+    }
 
     res.status(200).json({
       message: "Reset Password Email sent successfully.",
     });
   },
 );
+
+// export const sendForgotPasswordEmail = asyncHandler(
+//   async (req: AuthRequest, res: Response) => {
+//     const { user } = req;
+//     const { email } = req.body;
+
+//     const existingUser = await User.findOne({ email });
+
+//     if (!existingUser) {
+//       throw new Error("This email doen't exist.");
+//     }
+
+//     const token = existingUser.generatePasswordResetToken();
+//     await existingUser.save();
+
+//     const resetPasswordUrl = `${process.env.CLIENT_URL}/reset-password/${token}`;
+//     const body = forgetPasswordEmailTemplate(resetPasswordUrl);
+
+//     try {
+//       await sendEmail({
+//         receiver_mail: user?.email!,
+//         subject: "Password Reset - Trendtee.COM",
+//         body,
+//       });
+//     } catch (error) {
+//       existingUser.resetPasswordExpire = undefined;
+//       existingUser.resetPasswordToken = undefined;
+//       await existingUser.save();
+//     }
+
+//     res.status(200).json({ message: "Reset Password email send." });
+//   },
+// );

@@ -19,8 +19,8 @@ export const sendEmail = async ({ receiver_mail, subject, body }: Options) => {
   const mail = {
     from: `${process.env.FROM_NAME} <${process.env.FROM_EMAIL}>`,
     to: receiver_mail,
-    subject: subject,
-    body: body,
+    subject,
+    html: body,
   };
 
   await transport.sendMail(mail);

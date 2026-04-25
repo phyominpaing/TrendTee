@@ -12,6 +12,7 @@ import {
 import { protect } from "../middlewares/authMiddleware.ts";
 import {
   loginValidator,
+  passwordResetValidator,
   registerValidator,
   updatePasswordValidator,
   uploadImageValidator,
@@ -51,6 +52,16 @@ router.post(
   updatePassword,
 );
 
-router.post("/forgot-password", protect, sendForgotPasswordEmail);
+router.post(
+  "/forgot-password",
+  passwordResetValidator,
+  validateRequest,
+  protect,
+  sendForgotPasswordEmail,
+);
+
+router.get("/testing", (req, res) => {
+  res.json({ message: "GET works" });
+});
 
 export default router;

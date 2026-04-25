@@ -36,3 +36,7 @@ export const updatePasswordValidator = [
   //   .notEmpty()
   //   .withMessage("Confirm password is required"),
 ];
+
+export const passwordResetValidator = [
+  body("email").isEmail().withMessage("Valid email is required"),
+]
