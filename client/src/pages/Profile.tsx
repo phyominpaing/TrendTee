@@ -18,7 +18,7 @@ import {
   useUploadAvatarMutation,
 } from "@/store/slices/userApi";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Camera, RefreshCcw, ShieldCheck, X } from "lucide-react";
+import { Camera, RefreshCcw, ShieldCheck } from "lucide-react";
 import { useEffect, useState, type ChangeEvent } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";

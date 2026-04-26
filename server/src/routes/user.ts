@@ -60,8 +60,4 @@ router.post(
   sendForgotPasswordEmail,
 );
 
-router.get("/testing", (req, res) => {
-  res.json({ message: "GET works" });
-});
-
 export default router;

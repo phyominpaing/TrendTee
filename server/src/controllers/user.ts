@@ -227,7 +227,7 @@ export const updatePassword = asyncHandler(
 export const sendForgotPasswordEmail = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     const { user } = req;
-    const {email} = req.body;
+    const { email } = req.body;
 
     const existingUser = await User.findOne({ email });
 
@@ -262,36 +262,3 @@ export const sendForgotPasswordEmail = asyncHandler(
     });
   },
 );
-
-// export const sendForgotPasswordEmail = asyncHandler(
-//   async (req: AuthRequest, res: Response) => {
-//     const { user } = req;
-//     const { email } = req.body;
-
-//     const existingUser = await User.findOne({ email });
-
-//     if (!existingUser) {
-//       throw new Error("This email doen't exist.");
-//     }
-
-//     const token = existingUser.generatePasswordResetToken();
-//     await existingUser.save();
-
-//     const resetPasswordUrl = `${process.env.CLIENT_URL}/reset-password/${token}`;
-//     const body = forgetPasswordEmailTemplate(resetPasswordUrl);
-
-//     try {
-//       await sendEmail({
-//         receiver_mail: user?.email!,
-//         subject: "Password Reset - Trendtee.COM",
-//         body,
-//       });
-//     } catch (error) {
-//       existingUser.resetPasswordExpire = undefined;
-//       existingUser.resetPasswordToken = undefined;
-//       await existingUser.save();
-//     }
-
-//     res.status(200).json({ message: "Reset Password email send." });
-//   },
-// );
