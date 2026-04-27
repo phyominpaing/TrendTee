@@ -20,3 +20,17 @@ export const registerSchema = z.object({
     message: "Password must be at least 6 characters",
   }),
 });
+
+export const resetPassswordSchema = z
+  .object({
+    newPassword: z.string().min(6, {
+      message: "Password must be at least 6 characters",
+    }),
+    confirmPassword: z.string().min(6, {
+      message: "Password must be at least 6 characters",
+    }),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
