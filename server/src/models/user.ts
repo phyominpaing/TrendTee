@@ -11,8 +11,8 @@ interface IUser extends Document {
     url: string;
     public_alt: string;
   };
-  resetPasswordToken?: string;
-  resetPasswordExpire?: string;
+  resetPasswordToken?: string | undefined;
+  resetPasswordExpire?: string | Date;
   matchPassword(enteredPassword: string): boolean;
   generatePasswordResetToken(): string;
 }
@@ -32,7 +32,7 @@ const userSchema = new Schema<IUser>(
       ],
     },
     resetPasswordToken: String,
-    resetPasswordExpire: String,
+    resetPasswordExpire: Date,
   },
   { timestamps: true },
 );
@@ -56,7 +56,7 @@ userSchema.methods.generatePasswordResetToken = function (): string {
     .update(token)
     .digest("hex");
 
-  this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
+  this.resetPasswordExpire = new Date(Date.now() + 10 * 60 * 1000);
 
   return token;
 };

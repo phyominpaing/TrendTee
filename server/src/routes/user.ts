@@ -4,6 +4,7 @@ import {
   loginUser,
   logoutUser,
   registerUser,
+  resetPassword,
   sendForgotPasswordEmail,
   updatePassword,
   updateUserProfile,
@@ -12,6 +13,7 @@ import {
 import { protect } from "../middlewares/authMiddleware.ts";
 import {
   loginValidator,
+  passwordChangeValidator,
   passwordResetValidator,
   registerValidator,
   updatePasswordValidator,
@@ -58,6 +60,13 @@ router.post(
   validateRequest,
   protect,
   sendForgotPasswordEmail,
+);
+
+router.post(
+  "/reset-password/:token",
+  passwordChangeValidator,
+  validateRequest,
+  resetPassword,
 );
 
 export default router;

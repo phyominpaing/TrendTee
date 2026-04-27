@@ -5,6 +5,7 @@ import generateToken from "../utils/generateToken.ts";
 import type { AuthRequest } from "../middlewares/authMiddleware.ts";
 import { deleteImage, uploadSingleImage } from "../utils/cloudinary.ts";
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 import { forgetPasswordEmailTemplate } from "../utils/emailTemplate.ts";
 import { sendEmail } from "../utils/sendEmail.ts";
 
@@ -259,6 +260,39 @@ export const sendForgotPasswordEmail = asyncHandler(
 
     res.status(200).json({
       message: "Reset Password Email sent successfully.",
+    });
+  },
+);
+
+// @route POST - api/reset-password/:token
+// @desc Reset user's password using token
+// @access Private | User
+export const resetPassword = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const token = req.params.token as string;
+    const { newPassword } = req.body;
+
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+    const user = await User.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      res.status(400);
+      throw new Error(
+        "Token is invalid or has been expired. Request email again!",
+      );
+    }
+
+    user.password = newPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save();
+
+    res.status(200).json({
+      message: "Password reset successful.",
     });
   },
 );
