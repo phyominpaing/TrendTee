@@ -1,12 +1,12 @@
 import type { User } from "@/types/user";
 import { apiSlice } from "./api";
 
-interface loginInput {
+interface loginInputs {
   email: string;
   password: string;
 }
 
-interface registerInput extends loginInput {
+interface registerInputs extends loginInputs {
   name: string;
 }
 
@@ -14,21 +14,30 @@ interface avatarUploadInput {
   image_url: string;
 }
 
-interface userProfileUpdateInput {
+interface userProfileUpdateInputs {
   name: string;
   email: string;
 }
 
-interface userPasswordUpdateInput {
+interface userPasswordUpdateInputs {
   oldPassword: string;
   newPassword: string;
   confirmPassword: string;
 }
 
+interface ResetPasswordInputs {
+  token: string;
+  newPassword: string;
+}
+
+interface ForgotPasswordInput {
+  email: string;
+}
+
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation({
-      query: (data: registerInput) => ({
+      query: (data: registerInputs) => ({
         url: "/register",
         method: "POST",
         body: data,
@@ -36,7 +45,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     login: builder.mutation({
-      query: (data: loginInput) => ({
+      query: (data: loginInputs) => ({
         url: "/login",
         method: "POST",
         body: data,
@@ -68,7 +77,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["User"],
     }),
     updateUserProfileInfo: builder.mutation({
-      query: (data: userProfileUpdateInput) => ({
+      query: (data: userProfileUpdateInputs) => ({
         url: "/user/update",
         method: "POST",
         body: data,
@@ -76,14 +85,35 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
-    updatePassword : builder.mutation({
-      query: (data: userPasswordUpdateInput) => ({
+    updatePassword: builder.mutation({
+      query: (data: userPasswordUpdateInputs) => ({
         url: "/update-password",
         method: "POST",
         body: data,
         credentials: "include",
       }),
-    })
+    }),
+    forgotPassword: builder.mutation({
+      query: (data: ForgotPasswordInput) => ({
+        url: "/forgot-password",
+        method: "POST",
+        body: {
+          email: data.email,
+        },
+        credentials: "include",
+      }),
+    }),
+
+    resetPassword: builder.mutation({
+      query: (data: ResetPasswordInputs) => ({
+        url: `/reset-password/${data.token}`,
+        method: "POST",
+        body: {
+          newPassword: data.newPassword,
+        },
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
@@ -94,5 +124,7 @@ export const {
   useCurrentUserQuery,
   useUploadAvatarMutation,
   useUpdateUserProfileInfoMutation,
-  useUpdatePasswordMutation
+  useUpdatePasswordMutation,
+  useResetPasswordMutation,
+  useForgotPasswordMutation,
 } = userApiSlice;

@@ -13,6 +13,7 @@ import { Toaster } from "sonner";
 import Profile from "./pages/Profile.tsx";
 import IsLogin from "./pages/IsLogin.tsx";
 import ResetPassword from "./pages/ResetPassword.tsx";
+import ForgotPassword from "./pages/ForgotPassword.tsx";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />,
   },
 ]);
 

@@ -2,6 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/avatar";
 import EmailUpdateForm from "@/components/profile/EmailUpdateForm";
 import NameUpdateForm from "@/components/profile/NameUpdateForm";
 import PasswordUpdateForm from "@/components/profile/PasswordUpdateForm";
+import ResetPasswordForm from "@/components/profile/ResetPasswordForm";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -192,7 +193,7 @@ const Profile = () => {
   }
 
   return (
-    <section className="mt-6">
+    <section className="mt-6 space-y-6">
       <Card className="overflow-hidden border border-white/60 bg-white/90 shadow-2xl shadow-slate-900/10">
         <CardHeader className="border-b border-slate-200 bg-linear-to-r from-slate-50 via-white to-slate-50 px-6 py-6 md:px-8">
           <CardTitle className="text-2xl font-semibold tracking-tight text-slate-900">
@@ -331,6 +332,8 @@ const Profile = () => {
           </form>
         </CardContent>
       </Card>
+
+      <ResetPasswordForm email={user?.email!} />
     </section>
   );
 };

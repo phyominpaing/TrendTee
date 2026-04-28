@@ -20,12 +20,21 @@ import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { resetPassswordSchema } from "@/schema/auth";
 import { toast } from "sonner";
+import {
+  useLogoutMutation,
+  useResetPasswordMutation,
+} from "@/store/slices/userApi";
+import { useDispatch } from "react-redux";
+import { clearUserInfo } from "@/store/slices/auth";
 
 type FormValues = z.infer<typeof resetPassswordSchema>;
 
 const ResetPassword = () => {
   const params = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [resetPasswordMutation, { isLoading }] = useResetPasswordMutation();
+  const [logoutMutation] = useLogoutMutation();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(resetPassswordSchema),
@@ -44,13 +53,18 @@ const ResetPassword = () => {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
-      // const res = await loginMutation(data).unwrap();
-      // dispatch(setUserInfo(res));
-      // reset();
-      // toast.success("Login successful.");
-      navigate("/");
+      const res = await resetPasswordMutation({
+        newPassword: data.newPassword,
+        token: params.id!,
+      }).unwrap();
+
+      await logoutMutation({}).unwrap();
+      dispatch(clearUserInfo());
+      reset();
+      toast.success(res?.message);
+      navigate("/login");
     } catch (error: any) {
-      toast.error(`Login failed. ${error.data.message} . Please try again.`);
+      toast.error(`Login failed. ${error.data?.message} . Please try again.`);
       console.log(error);
     }
     reset();
@@ -58,7 +72,7 @@ const ResetPassword = () => {
 
   // Form error handling, we need to convert the error object to an array of errors with a message property, because the FieldError component expects an array of errors. If there is no error, we return undefined.
   const toFieldErrors = (error?: { message?: string }) =>
-  error ? [{ message: error.message }] : undefined;
+    error ? [{ message: error.message }] : undefined;
 
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden] px-4 py-10">
@@ -148,6 +162,7 @@ const ResetPassword = () => {
               type="submit"
               size="lg"
               className="group h-12 w-full rounded-2xl bg-slate-900 text-white shadow-lg shadow-slate-900/20 transition hover:bg-slate-800"
+              disabled={isSubmitting || isLoading}
             >
               Reset Password
               <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />

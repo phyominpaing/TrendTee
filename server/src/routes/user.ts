@@ -58,7 +58,6 @@ router.post(
   "/forgot-password",
   passwordResetValidator,
   validateRequest,
-  protect,
   sendForgotPasswordEmail,
 );
 

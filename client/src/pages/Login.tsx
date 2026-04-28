@@ -193,6 +193,8 @@ const Login = () => {
                     {isSubmitting ? "Signing in..." : "Sign in"}
                     <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
                   </Button>
+
+                
                 </form>
 
                 <p className="mt-6 text-center text-sm text-slate-500">
@@ -204,6 +206,14 @@ const Login = () => {
                     Create one
                   </Link>
                 </p>
+                  <div className="flex justify-center">
+                    <Link
+                      to="/forgot-password"
+                      className="text-sm underline mt-2 text-slate-500 transition hover:text-slate-900"
+                    >
+                      Forgot password?
+                    </Link>
+                  </div>
               </CardContent>
             </div>
           </div>

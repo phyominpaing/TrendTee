@@ -226,8 +226,7 @@ export const updatePassword = asyncHandler(
 // @access Private | User
 
 export const sendForgotPasswordEmail = asyncHandler(
-  async (req: AuthRequest, res: Response) => {
-    const { user } = req;
+  async (req: Request, res: Response) => {
     const { email } = req.body;
 
     const existingUser = await User.findOne({ email });
@@ -245,7 +244,7 @@ export const sendForgotPasswordEmail = asyncHandler(
 
     try {
       await sendEmail({
-        receiver_mail: user?.email!,
+        receiver_mail: existingUser?.email!,
         subject: "Reset Password",
         body: body,
       });
