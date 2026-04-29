@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+// import { useParams } from "react-router";
 import RatingConverter from "../common/RatingConverter";
 import { Minus, Plus } from "lucide-react";
 
@@ -33,7 +33,7 @@ const ProductDetails = () => {
   const [selectedImage, setSelectedImage] = useState<string>();
   const [selectedColor, setSelectedColor] = useState<string>();
   const [selectedSize, setSelectedSize] = useState<string>();
-  const { id } = useParams();
+  // const { id } = useParams();
 
   useEffect(() => {
     if (product.images.length > 0) {

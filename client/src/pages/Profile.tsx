@@ -98,7 +98,6 @@ const Profile = () => {
   });
 
   // Update profile info
-
   const profileInfoUpdateHandler = async (data: ProfileFormValues) => {
     try {
       // ✅ Update name & email

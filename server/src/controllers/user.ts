@@ -63,7 +63,6 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
 // @route POST - api/logout
 // @desc Clear token and Logout from existing user's account
 // @access Public
-
 export const logoutUser = asyncHandler(async (req: Request, res: Response) => {
   res.cookie("token", "", {
     httpOnly: true,
@@ -139,7 +138,6 @@ export const getUserInfo = asyncHandler(
 // @route PATCH - api/user/update
 // @desc Update user's name and email
 // @access Private
-
 export const updateUserProfile = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     const { user } = req;
@@ -224,7 +222,6 @@ export const updatePassword = asyncHandler(
 // @route POST - api/forgot-password
 // @desc  Send email to reset user's password
 // @access Private | User
-
 export const sendForgotPasswordEmail = asyncHandler(
   async (req: Request, res: Response) => {
     const { email } = req.body;
