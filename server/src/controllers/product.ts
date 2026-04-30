@@ -126,3 +126,66 @@ export const deleteProduct = asyncHandler(
     });
   },
 );
+
+// @route GET - api/products
+// @desc Get all products with pagination and filtering
+// @access Public
+
+// /api/products?key=value&key=value&...&keyword=shirt&page=1&limit=10
+export const getProductsWithFilters = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { keyword, category, minPrice, maxPrice, size, color, sortBy } =
+      req.query;
+
+    let query: any = {};
+
+    if (keyword) {
+      query.name = { $regex: keyword, $options: "i" };
+    }
+
+    if (category) {
+      query.category = category;
+    }
+
+    if (minPrice || maxPrice) {
+      query.price = {};
+      if (minPrice) {
+        query.price.$gte = Number(minPrice);
+      }
+      if (maxPrice) {
+        query.price.$lte = Number(maxPrice);
+      }
+    }
+
+    if (size) {
+      query.size = { $in: [size] };
+    }
+
+    if (color) {
+      query.color = { $in: [color] };
+    }
+
+    //sorting
+    let sortOption: any = {};
+
+    if (sortBy === "price_asc") {
+      sortOption.price = 1;
+    }
+
+    if (sortBy === "price_desc") {
+      sortOption.price = -1;
+    }
+
+    if (sortBy === "latest") {
+      sortOption.createdAt = -1;
+    }
+
+    if (sortBy === "rating") {
+      sortOption.rating_count = -1;
+    }
+
+    const products = await Product.find(query).sort(sortOption);
+
+    res.status(200).json(products);
+  },
+);
