@@ -2,6 +2,10 @@ import { Router } from "express";
 import {
   createProduct,
   deleteProduct,
+  getFeaturedProducts,
+  getNewArrivalsProducts,
+  getProductById,
+  getProductsWithFilters,
   updateProduct,
 } from "../controllers/product.ts";
 import { isAdmin, protect } from "../middlewares/authMiddleware.ts";
@@ -22,6 +26,7 @@ router.post(
   validateRequest,
   createProduct,
 );
+
 router.put(
   "/products/:id",
   protect,
@@ -30,6 +35,7 @@ router.put(
   validateRequest,
   updateProduct,
 );
+
 router.delete(
   "/products/:id",
   protect,
@@ -38,5 +44,10 @@ router.delete(
   validateRequest,
   deleteProduct,
 );
+
+router.get("/products", getProductsWithFilters);
+router.get("/products/new" , getNewArrivalsProducts);
+router.get("/products/featured" , getFeaturedProducts);
+router.get("/products/:id", getProductById);
 
 export default router;

@@ -149,20 +149,16 @@ export const getProductsWithFilters = asyncHandler(
 
     if (minPrice || maxPrice) {
       query.price = {};
-      if (minPrice) {
-        query.price.$gte = Number(minPrice);
-      }
-      if (maxPrice) {
-        query.price.$lte = Number(maxPrice);
-      }
+      if (minPrice) query.price.$gte = Number(minPrice);
+      if (maxPrice) query.price.$lte = Number(maxPrice);
     }
 
     if (size) {
-      query.size = { $in: [size] };
+      query.sizes = { $in: [size] };
     }
 
     if (color) {
-      query.color = { $in: [color] };
+      query.colors = { $in: [color] };
     }
 
     //sorting
@@ -187,5 +183,47 @@ export const getProductsWithFilters = asyncHandler(
     const products = await Product.find(query).sort(sortOption);
 
     res.status(200).json(products);
+  },
+);
+
+// @route GET - api/products/new
+// @desc Get all new arrival products
+// @access Public
+export const getNewArrivalsProducts = asyncHandler(
+  async (req: Request, res: Response) => {
+    const products = await Product.find({ is_new_arrival: true }).sort({
+      createdAt: -1,
+    });
+
+    res.status(200).json(products);
+  },
+);
+
+// @route GET - api/products/featured
+// @desc Get all featured products
+// @access Public
+export const getFeaturedProducts = asyncHandler(
+  async (req: Request, res: Response) => {
+    const products = await Product.find({ is_feature: true });
+
+    res.status(200).json(products);
+  },
+);
+
+// @route GET - api/products/:id
+// @desc Get product by id
+// @access Public
+export const getProductById = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const product = await Product.findById(id);
+
+    if (!product) {
+      res.status(404);
+      throw new Error("Product not found.");
+    }
+
+    res.status(200).json(product);
   },
 );
