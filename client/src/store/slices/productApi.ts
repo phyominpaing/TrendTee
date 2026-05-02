@@ -1,4 +1,4 @@
-import type { Product } from "@/types/product";
+import type { Product, ProductMeta } from "@/types/product";
 import { apiSlice } from "./api";
 
 export const productApiSlice = apiSlice.injectEndpoints({
@@ -45,6 +45,13 @@ export const productApiSlice = apiSlice.injectEndpoints({
         return `/products?${searchParams.toString()}`;
       },
     }),
+    getProductsMeta : builder.query<ProductMeta , string>({
+      query: () => ({
+        url: "/filters/meta",
+        method: "GET",
+        credentials: "include",
+      }),
+    })
   }),
 });
 
@@ -53,4 +60,5 @@ export const {
   useGetFeaturedQuery,
   useGetProductDetailsQuery,
   useGetProductsQuery,
+  useGetProductsMetaQuery
 } = productApiSlice;

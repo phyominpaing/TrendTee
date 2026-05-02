@@ -1,4 +1,3 @@
-
 export interface ProductImage {
   url: string;
 }
@@ -12,4 +11,11 @@ export interface Product {
   colors: string[];
   rating: number;
   images: ProductImage[];
+}
+
+export interface ProductMeta {
+  colors: string[];
+  sizes: string[];
+  minPrice: number;
+  maxPrice: number;
 }
