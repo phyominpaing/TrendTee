@@ -10,7 +10,7 @@ const SecondaryBar = () => {
           <p className="text-lg font-medium">Categories</p>
         </div>
 
-        <div className="flex items-center gap-6 text-base">
+        <div className="flex items-center gap-6 text-base cursor-pointer">
           {categories.map((category, index) => (
             <p key={index}>{category}</p>
           ))}

@@ -17,12 +17,25 @@ export const productApiSlice = apiSlice.injectEndpoints({
         credentials: "include",
       }),
     }),
-    getProductDetails: builder.query<Product , string>({
-      query: (id : string) => ({
+    getProductDetails: builder.query<Product, string>({
+      query: (id: string) => ({
         url: `/products/${id}`,
         method: "GET",
         credentials: "include",
       }),
+    }),
+    getProducts: builder.query({
+      query: ({ size, color, category, minPrice, maxPrice, sortBy, keyword }) => {
+        const searchParams = new URLSearchParams();
+        if (size) searchParams.append("size", size);
+        if (color) searchParams.append("color", color);
+        if (category) searchParams.append("category", category);
+        if (minPrice) searchParams.append("minPrice", minPrice.toString());
+        if (maxPrice) searchParams.append("maxPrice", maxPrice.toString());
+        if (sortBy) searchParams.append("sortBy", sortBy);
+        if (keyword) searchParams.append("keyword", keyword);
+        return `/products?${searchParams.toString()}`;
+      },
     }),
   }),
 });
@@ -31,4 +44,5 @@ export const {
   useGetNewArrivalsQuery,
   useGetFeaturedQuery,
   useGetProductDetailsQuery,
+  useGetProductsQuery
 } = productApiSlice;

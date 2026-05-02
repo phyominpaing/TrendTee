@@ -8,26 +8,19 @@ import type { ProductImage } from "@/types/product";
 const ProductDetails = () => {
   const [selectedImage, setSelectedImage] = useState<string>();
   const [selectedColor, setSelectedColor] = useState<string>();
-  const [selectedSize, setSelectedSize] = useState<string>();
+  const [selectedSize, setSelectedSize] = useState<string>(); 
+  const [quantity, setQuantity] = useState<number>(1);
   const { id } = useParams();
 
   const { data: product, isLoading } = useGetProductDetailsQuery(id as string);
 
-  console.log(product);
-
   useEffect(() => {
     if (product) {
-      if (product.images.length > 0) {
-        setSelectedImage(product.images[0].url);
-      }
+      if (product.images.length > 0) setSelectedImage(product.images[0].url);
 
-      if (product.colors.length > 0) {
-        setSelectedColor(product.colors[0]);
-      }
+      if (product.colors.length > 0) setSelectedColor(product.colors[0]);
 
-      if (product.sizes.length > 0) {
-        setSelectedSize(product.sizes[0]);
-      }
+      if (product.sizes.length > 0) setSelectedSize(product.sizes[0]);
     }
   }, [product]);
 
@@ -114,11 +107,24 @@ const ProductDetails = () => {
         <hr className="mt-4 text-gray-300" />
         <div className="mt-4 flex items-center gap-8">
           <div className=" flex items-center gap-4">
-            <button className="bg-black p-2 rounded-md text-white cursor-pointer">
+            <button
+              onClick={() =>
+                setQuantity((prev) => {
+                  if (prev === 1) {
+                    return prev;
+                  }
+                  return prev - 1;
+                })
+              }
+              className="bg-black p-2 rounded-md text-white cursor-pointer"
+            >
               <Minus size={18} />
             </button>
-            <span className="font-medium">1</span>
-            <button className="bg-black p-2 rounded-md text-white cursor-pointer">
+            <span className="font-medium">{quantity}</span>
+            <button
+              onClick={() => setQuantity((prev) => prev + 1)}
+              className="bg-black p-2 rounded-md text-white cursor-pointer"
+            >
               <Plus size={18} />
             </button>
           </div>
