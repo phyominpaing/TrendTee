@@ -25,7 +25,15 @@ export const productApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     getProducts: builder.query({
-      query: ({ size, color, category, minPrice, maxPrice, sortBy, keyword }) => {
+      query: ({
+        size,
+        color,
+        category,
+        minPrice,
+        maxPrice,
+        sortBy,
+        keyword,
+      }) => {
         const searchParams = new URLSearchParams();
         if (size) searchParams.append("size", size);
         if (color) searchParams.append("color", color);
@@ -44,5 +52,5 @@ export const {
   useGetNewArrivalsQuery,
   useGetFeaturedQuery,
   useGetProductDetailsQuery,
-  useGetProductsQuery
+  useGetProductsQuery,
 } = productApiSlice;

@@ -1,7 +1,16 @@
 import { Menu } from "lucide-react";
+import { useNavigate } from "react-router";
 
-const categories = ["T-shirts", "Hoodies", "Shirt", "Gym", "Shorts", "Jeans"];
+const categories = ["T-shirt", "Hoodie", "Short", "Jeans", "Shoe"];
 const SecondaryBar = () => {
+  const navigate = useNavigate();
+
+  const handleClick = (category: string) => {
+    navigate(
+      `/products/filter?category=${encodeURIComponent(category.trim()).toLowerCase()}`,
+    );
+  };
+
   return (
     <main className="text-black bg-gray-200 py-2">
       <div className="max-w-6xl mx-auto flex items-center justify-between">
@@ -12,7 +21,13 @@ const SecondaryBar = () => {
 
         <div className="flex items-center gap-6 text-base cursor-pointer">
           {categories.map((category, index) => (
-            <p key={index}>{category}</p>
+            <p
+              className=" cursor-pointer"
+              onClick={() => handleClick(category)}
+              key={index}
+            >
+              {category}
+            </p>
           ))}
         </div>
       </div>
