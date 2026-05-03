@@ -19,3 +19,12 @@ export interface ProductMeta {
   minPrice: number;
   maxPrice: number;
 }
+
+export interface ProductFilters {
+  colors : string[];
+  sizes : string[];
+  minPrice : string | null;
+  maxPrice : string | null;
+  keyword : string;
+  category : string;
+}

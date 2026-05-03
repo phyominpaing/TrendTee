@@ -3,29 +3,33 @@ import {
   useGetProductsMetaQuery,
   useGetProductsQuery,
 } from "@/store/slices/productApi";
-import type { Product } from "@/types/product";
+import type { Product, ProductFilters } from "@/types/product";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 
 const ProductFilter = () => {
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
   const navigate = useNavigate();
 
+  const initialFilters = (): ProductFilters => {
+    const queryParams = new URLSearchParams(location.search);
+    return {
+      keyword: queryParams.get("keyword") || "",
+      category: queryParams.get("category") || "",
+      minPrice: queryParams.get("minPrice") || "",
+      maxPrice: queryParams.get("maxPrice") || "",
+      colors: queryParams.getAll("colors"),
+      sizes: queryParams.getAll("sizes"),
+    };
+  };
+
   // local state (ui update / from url) to hold filter values, initialized from query parameters
-  const [filters, setFilters] = useState({
-    keyword: queryParams.get("keyword") || "",
-    category: queryParams.get("category") || "",
-  });
+  const [filters, setFilters] = useState(initialFilters);
 
   // update local state when url changes (e.g. user clicks category in SecondaryBar or performs a search)
   // this ensures the component re-fetches products with new filters
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    setFilters({
-      keyword: queryParams.get("keyword") || "",
-      category: queryParams.get("category") || "",
-    });
+    setFilters(initialFilters());
   }, [location.search]);
 
   // sync url query parameters with local state (optional, for better UX - keeps url in sync with current filters)
@@ -34,14 +38,22 @@ const ProductFilter = () => {
     if (filters.keyword) parms.set("keyword", filters.keyword);
     if (filters.category) parms.set("category", filters.category);
 
-    navigate(
-      {
-        pathname: "/products/filter",
-        search: parms.toString(),
-      },
-      { replace: true },
-    );
-  }, [filters, navigate]);
+    filters.colors.forEach((color) => parms.append("colors", color));
+    filters.sizes.forEach((size) => parms.append("sizes", size));
+
+    const newSearchQuery = parms.toString();
+    const currentSearchQuery = location.search.slice(1); // remove leading '?'
+
+    if (newSearchQuery !== currentSearchQuery) {
+      navigate(
+        {
+          pathname: "/products/filter",
+          search: newSearchQuery,
+        },
+        { replace: true },
+      );
+    }
+  }, [filters, navigate, location.search]);
 
   const { data: products = [], isLoading } = useGetProductsQuery(filters) as {
     data: Product[];
@@ -49,6 +61,17 @@ const ProductFilter = () => {
   };
 
   const { data: product_meta } = useGetProductsMetaQuery("none");
+
+  // filter state -> {colors : ["Red" , "Blue"] , sizes : ["S","M"] , ...}
+  const toggleValue = (key: "colors" | "sizes", value: string) => {
+    setFilters((prev) => {
+      const currentValues = prev[key];
+      const newValues = currentValues.includes(value)
+        ? currentValues.filter((x) => x !== value)
+        : [...currentValues, value];
+      return { ...prev, [key]: newValues };
+    });
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -109,6 +132,7 @@ const ProductFilter = () => {
       </div>
 
       <div className=" col-span-10 gap-6">
+        <h1 className="text-2xl font-bold mb-2">Products</h1>
         <div className=" grid grid-cols-4 gap-6 py-4">
           {products.map((product) => (
             <ProductCard
