@@ -26,8 +26,8 @@ export const productApiSlice = apiSlice.injectEndpoints({
     }),
     getProducts: builder.query({
       query: ({
-        size,
-        color,
+        sizes,
+        colors,
         category,
         minPrice,
         maxPrice,
@@ -35,8 +35,14 @@ export const productApiSlice = apiSlice.injectEndpoints({
         keyword,
       }) => {
         const searchParams = new URLSearchParams();
-        if (size) searchParams.append("size", size);
-        if (color) searchParams.append("color", color);
+        
+        if (sizes && sizes.length)
+          sizes.forEach((size: string) => searchParams.append("size", size));
+        if (colors && colors.length)
+          colors.forEach((color: string) =>
+            searchParams.append("color", color),
+          );
+
         if (category) searchParams.append("category", category);
         if (minPrice) searchParams.append("minPrice", minPrice.toString());
         if (maxPrice) searchParams.append("maxPrice", maxPrice.toString());
@@ -45,13 +51,13 @@ export const productApiSlice = apiSlice.injectEndpoints({
         return `/products?${searchParams.toString()}`;
       },
     }),
-    getProductsMeta : builder.query<ProductMeta , string>({
+    getProductsMeta: builder.query<ProductMeta, string>({
       query: () => ({
         url: "/filters/meta",
         method: "GET",
         credentials: "include",
       }),
-    })
+    }),
   }),
 });
 
@@ -60,5 +66,5 @@ export const {
   useGetFeaturedQuery,
   useGetProductDetailsQuery,
   useGetProductsQuery,
-  useGetProductsMetaQuery
+  useGetProductsMetaQuery,
 } = productApiSlice;

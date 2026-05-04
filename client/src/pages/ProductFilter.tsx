@@ -77,9 +77,6 @@ const ProductFilter = () => {
     return <div>Loading...</div>;
   }
 
-  if (products.length === 0) {
-    return <div>No products found.</div>;
-  }
   return (
     <div className=" grid grid-cols-12 gap-6 mt-6">
       <div className="col-span-2 gap-6">
@@ -93,8 +90,13 @@ const ProductFilter = () => {
           <div className="flex flex-col gap-1 mb-4 justify-start items-start">
             {product_meta?.colors.map((color, index) => (
               <button
+                onClick={() => toggleValue("colors", color)}
                 key={index}
-                className="px-3 py-1 mr-2  rounded-full border border-gray-300 text-sm"
+                className={`px-3 py-1 mr-2  rounded-full border text-sm ${
+                  filters.colors.includes(color)
+                    ? "bg-black text-white border-black"
+                    : "border-gray-300"
+                }`}
               >
                 {color}
               </button>
@@ -105,8 +107,13 @@ const ProductFilter = () => {
           <div className="flex flex-col gap-1 mb-4 justify-start items-start">
             {product_meta?.sizes.map((size, index) => (
               <button
+                onClick={() => toggleValue("sizes", size)}
                 key={index}
-                className="px-3 py-1 mr-2  rounded-full border border-gray-300 text-sm"
+                className={`px-3 py-1 mr-2  rounded-full border text-sm ${
+                  filters.sizes.includes(size)
+                    ? "bg-black text-white border-black"
+                    : "border-gray-300"
+                }`}
               >
                 {size}
               </button>
@@ -133,18 +140,24 @@ const ProductFilter = () => {
 
       <div className=" col-span-10 gap-6">
         <h1 className="text-2xl font-bold mb-2">Products</h1>
-        <div className=" grid grid-cols-4 gap-6 py-4">
-          {products.map((product) => (
-            <ProductCard
-              key={product._id}
-              _id={product._id}
-              name={product.name}
-              price={product.price}
-              image={product.images[0].url}
-              ratingCount={product.rating}
-            />
-          ))}
-        </div>
+        {products.length === 0 ? (
+          <p className="text-gray-600">
+            No products found matching the filters.
+          </p>
+        ) : (
+          <div className=" grid grid-cols-4 gap-6 py-4">
+            {products.map((product) => (
+              <ProductCard
+                key={product._id}
+                _id={product._id}
+                name={product.name}
+                price={product.price}
+                image={product.images[0].url}
+                ratingCount={product.rating}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
