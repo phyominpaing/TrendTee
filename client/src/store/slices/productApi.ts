@@ -35,13 +35,15 @@ export const productApiSlice = apiSlice.injectEndpoints({
         keyword,
       }) => {
         const searchParams = new URLSearchParams();
-        
+
         if (sizes && sizes.length)
           sizes.forEach((size: string) => searchParams.append("size", size));
         if (colors && colors.length)
           colors.forEach((color: string) =>
             searchParams.append("color", color),
           );
+        console.log(colors);
+        console.log(searchParams.toString()); 
 
         if (category) searchParams.append("category", category);
         if (minPrice) searchParams.append("minPrice", minPrice.toString());

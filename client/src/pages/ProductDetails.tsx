@@ -84,7 +84,8 @@ const ProductDetails = () => {
             <div
               onClick={() => handleColorClick(color)}
               key={index}
-              className={`w-6 h-6 rounded-full cursor-pointer ${selectedColor === color ? "border-2 border-gray-400" : ""}`}
+              className={`w-6 h-6 rounded-full border cursor-pointer ${selectedColor === color ? "border-2 border-gray-400" : ""}`}
+              title={color}
               style={{ backgroundColor: color }}
             />
           ))}

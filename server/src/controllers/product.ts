@@ -154,11 +154,13 @@ export const getProductsWithFilters = asyncHandler(
     }
 
     if (size) {
-      query.sizes = { $in: [size] };
+      const sizes = Array.isArray(size) ? size : [size];
+      query.sizes = { $in: sizes };
     }
 
     if (color) {
-      query.colors = { $in: [color] };
+      const colors = Array.isArray(color) ? color : [color];
+      query.colors = { $in: colors };
     }
 
     //sorting
