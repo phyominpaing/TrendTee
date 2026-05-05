@@ -35,11 +35,15 @@ const ProductFilter = () => {
   // sync url query parameters with local state (optional, for better UX - keeps url in sync with current filters)
   useEffect(() => {
     const parms = new URLSearchParams();
+
     if (filters.keyword) parms.set("keyword", filters.keyword);
     if (filters.category) parms.set("category", filters.category);
 
     filters.colors.forEach((color) => parms.append("colors", color));
     filters.sizes.forEach((size) => parms.append("sizes", size));
+
+    if (filters.minPrice) parms.set("minPrice", filters.minPrice);
+    if (filters.maxPrice) parms.set("maxPrice", filters.maxPrice);
 
     const newSearchQuery = parms.toString();
     const currentSearchQuery = location.search.slice(1); // remove leading '?'
@@ -71,6 +75,10 @@ const ProductFilter = () => {
         : [...currentValues, value];
       return { ...prev, [key]: newValues };
     });
+  };
+
+  const handlePriceChange = (type: "minPrice" | "maxPrice", value: string) => {
+    setFilters((prev) => ({ ...prev, [type]: value }));
   };
 
   if (isLoading) {
@@ -126,13 +134,17 @@ const ProductFilter = () => {
               type="number"
               min={0}
               placeholder={`Min ($${product_meta?.minPrice})`}
-              className="px-3 py-1 rounded-md border border-gray-300 text-sm mb-2"
+              className="px-3 w-full py-1 rounded-md border border-gray-300 text-sm mb-2"
+              value={filters.minPrice!}
+              onChange={(e) => handlePriceChange("minPrice", e.target.value)}
             />
             <input
               type="number"
               min={product_meta?.minPrice}
               placeholder={`Max ($${product_meta?.maxPrice})`}
-              className="px-3 py-1 rounded-md border border-gray-300 text-sm"
+              className="px-3 w-full py-1 rounded-md border border-gray-300 text-sm"
+              value={filters.maxPrice!}
+              onChange={(e) => handlePriceChange("maxPrice", e.target.value)}
             />
           </div>
         </div>
