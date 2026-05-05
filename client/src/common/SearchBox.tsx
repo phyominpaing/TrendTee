@@ -1,16 +1,21 @@
 import { Search } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 
 const SearchBox = () => {
-  const [keyword, setKeyword] = useState("");
+  const [searchParams] = useSearchParams();
+  const initialKeyword = searchParams.get("keyword") || "";
+  const [keyword, setKeyword] = useState(initialKeyword);
   const navigate = useNavigate();
 
   const handleSearchInput = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (keyword.trim()) {
+      const newParams = new URLSearchParams(searchParams);
+      newParams.set("keyword", keyword.trim());
+
       navigate(
-        `/products/filter?keyword=${encodeURIComponent(keyword.trim())}`,
+        `/products/filter?${newParams.toString()}`,
       );
     }
   };

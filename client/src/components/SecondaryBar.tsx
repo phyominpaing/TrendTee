@@ -1,15 +1,19 @@
 import { Menu } from "lucide-react";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 
 const categories = ["T-shirt", "Hoodie", "Short", "Jeans", "Shoe"];
 const SecondaryBar = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const handleClick = (category: string) => {
-    navigate(
-      `/products/filter?category=${encodeURIComponent(category.trim()).toLowerCase()}`,
-    );
+    const newParams = new URLSearchParams(searchParams);
+
+    newParams.set("category", category.trim().toLowerCase());
+    navigate(`/products/filter?${newParams.toString()}`);
   };
+
+  const currentCategory = searchParams.get("category") || "";
 
   return (
     <main className="text-black bg-gray-200 py-2">
@@ -22,7 +26,7 @@ const SecondaryBar = () => {
         <div className="flex items-center gap-6 text-base cursor-pointer">
           {categories.map((category, index) => (
             <p
-              className=" cursor-pointer"
+              className={`cursor-pointer ${currentCategory === category.toLowerCase() ? "underline font-semibold" : ""}`}
               onClick={() => handleClick(category)}
               key={index}
             >
