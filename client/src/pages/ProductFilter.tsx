@@ -49,10 +49,10 @@ const ProductFilter = () => {
     const currentSearchQuery = location.search.slice(1); // remove leading '?'
 
     if (newSearchQuery !== currentSearchQuery) {
-          const timeoutId = setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         navigate(
           { pathname: "/products/filter", search: newSearchQuery },
-          { replace: true }
+          { replace: true },
         );
       }, 100);
 
