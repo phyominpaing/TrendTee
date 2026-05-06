@@ -24,7 +24,7 @@ const SearchBox = () => {
     if (newKeyword) {
       newParams.set("keyword", newKeyword.trim());
     } else {
-      newParams.delete("keyword");
+      newParams.delete("keyword"); 
     }
 
     const newSearchQuery = newParams.toString();
@@ -62,7 +62,7 @@ const SearchBox = () => {
         {keyword && (
           <X
             size={20}
-            className="absolute top-2 right-3 text-black cursor-pointer"
+            className="absolute top-2 right-3 text-black cursor-pointer" 
             onClick={handleClear}
           />
         )}

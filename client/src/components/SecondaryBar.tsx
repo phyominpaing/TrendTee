@@ -9,8 +9,19 @@ const SecondaryBar = () => {
   const handleClick = (category: string) => {
     const newParams = new URLSearchParams(searchParams);
 
-    newParams.set("category", category.trim().toLowerCase());
-    navigate(`/products/filter?${newParams.toString()}`);
+    const categoryLower = category.trim().toLowerCase();
+    if (currentCategory === categoryLower) {
+      newParams.delete("category");
+    } else {
+      newParams.set("category", categoryLower);
+    }
+
+    const newSearchQuery = newParams.toString();
+    const path = newSearchQuery
+      ? `/products/filter?${newSearchQuery}`
+      : "/products/filter";
+
+    navigate(path, { replace: true });
   };
 
   const currentCategory = searchParams.get("category") || "";

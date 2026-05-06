@@ -4,7 +4,7 @@ import {
   useGetProductsQuery,
 } from "@/store/slices/productApi";
 import type { Product, ProductFilters } from "@/types/product";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 
 const ProductFilter = () => {
@@ -82,6 +82,28 @@ const ProductFilter = () => {
     setFilters((prev) => ({ ...prev, [type]: value }));
   };
 
+  const clearAllFilters = () => {
+    setFilters({
+      keyword: "",
+      category: "",
+      minPrice: "",
+      maxPrice: "",
+      colors: [],
+      sizes: [],
+    });
+  };
+
+  const hasActiveFilters = useMemo(() => {
+    return (
+      filters.keyword ||
+      filters.category ||
+      filters.minPrice ||
+      filters.maxPrice ||
+      filters.colors.length > 0 ||
+      filters.sizes.length > 0
+    );
+  }, [filters]);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -152,7 +174,17 @@ const ProductFilter = () => {
       </div>
 
       <div className=" col-span-10 gap-6">
-        <h1 className="text-2xl font-bold mb-2">Products</h1>
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-2xl font-bold">Products</h1>
+          {hasActiveFilters && (
+            <button
+              onClick={clearAllFilters}
+              className="text-sm underline text-gray-600 hover:text-gray-800"
+            >
+              Clear All Filters
+            </button>
+          )}
+        </div>
         {products.length === 0 ? (
           <p className="text-gray-600">
             No products found matching the filters.
