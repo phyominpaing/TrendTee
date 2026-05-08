@@ -11,10 +11,13 @@ import { Provider } from "react-redux";
 import { store } from "./store/index.ts";
 import { Toaster } from "sonner";
 import Profile from "./pages/Profile.tsx";
-import IsLogin from "./pages/IsLogin.tsx";
 import ResetPassword from "./pages/ResetPassword.tsx";
 import ForgotPassword from "./pages/ForgotPassword.tsx";
 import ProductFilter from "./pages/ProductFilter.tsx";
+import IsAdmin from "./pages/protector/isAdmin.tsx";
+import IsLogin from "./pages/protector/IsLogin.tsx";
+import Panel from "./pages/admin/Panel.tsx";
+import ProductCreate from "./pages/admin/ProductCreate.tsx";
 
 const router = createBrowserRouter([
   {
@@ -26,12 +29,16 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
+        path: "/reset-password/:id",
+        element: <ResetPassword />,
+      },
+      {
         path: "/products/:id",
         element: <ProductDetails />,
       },
       {
-        path : "/products/filter",
-        element : <ProductFilter />
+        path: "/products/filter",
+        element: <ProductFilter />,
       },
       {
         path: "/profile",
@@ -42,8 +49,18 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/reset-password/:id",
-        element: <ResetPassword />,
+        path: "/admin",
+        element: (
+          <IsAdmin>
+            <Panel />
+          </IsAdmin>
+        ),
+        children: [
+          {
+            path: "/admin/create-product",
+            element: <ProductCreate />,
+          },
+        ],
       },
     ],
   },

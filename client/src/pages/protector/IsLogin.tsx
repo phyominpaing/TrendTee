@@ -1,4 +1,5 @@
 import type { RootState } from "@/store";
+import { useCurrentUserQuery } from "@/store/slices/userApi";
 import type React from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -8,8 +9,10 @@ const IsLogin = ({ children }: { children: React.ReactNode }) => {
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
   const navigate = useNavigate();
 
+  const { isError } = useCurrentUserQuery();
+
   useEffect(() => {
-    if (!userInfo) {
+    if (!userInfo || isError) {
       navigate("/login");
     }
   }, [userInfo]);

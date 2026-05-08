@@ -6,7 +6,7 @@ const Main = () => {
   return (
     <section className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="max-w-6xl mx-auto w-full flex-1 flex flex-col">
+      <main className="max-w-6xl mx-auto w-full flex-1 flex flex-col py-6">
         <Outlet />
       </main>
       <Footer/>

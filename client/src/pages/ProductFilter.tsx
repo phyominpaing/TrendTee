@@ -109,7 +109,7 @@ const ProductFilter = () => {
   }
 
   return (
-    <div className=" grid grid-cols-12 gap-6 mt-6">
+    <div className=" grid grid-cols-12 gap-6">
       <div className="col-span-2 gap-6">
         <h2 className="text-lg font-bold mb-1">Products Filters</h2>
         <p className="text-gray-600 text-xs mb-4">
