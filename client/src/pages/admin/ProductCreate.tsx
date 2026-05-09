@@ -1,8 +1,7 @@
+import ProductForm from "./ProductForm";
 
 const ProductCreate = () => {
-  return (
-    <div>ProductCreate</div>
-  )
-}
+  return <ProductForm />;
+};
 
-export default ProductCreate
+export default ProductCreate;
