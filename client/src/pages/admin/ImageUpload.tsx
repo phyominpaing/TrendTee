@@ -2,9 +2,9 @@ import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 
 interface ImageUploadProps {
-  images: Array<{ preview: string; file: File; public_alt: string }>;
+  images: Array<{ preview: string; public_alt?: string }>;
   onChange: (
-    images: Array<{ preview: string; file: File; public_alt: string }>,
+    images: Array<{ preview: string; file?: File; public_alt?: string }>,
   ) => void;
 }
 const ImageUpload = ({ images, onChange }: ImageUploadProps) => {
@@ -42,7 +42,7 @@ const ImageUpload = ({ images, onChange }: ImageUploadProps) => {
             />
             <button
               type="button"
-              className="absolute -top-2 -right-2 bg-slate-800 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              className="absolute -top-2 -right-2 bg-slate-600 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
               onClick={() => removeImage(index)}
             >
               {" "}
