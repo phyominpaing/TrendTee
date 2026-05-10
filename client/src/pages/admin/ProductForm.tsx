@@ -1,9 +1,13 @@
-import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { productSchema, type ProductFormInputs } from "@/schema/product";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import ImageUpload from "./ImageUpload";
+import CategorySelect from "./CategorySelect";
+import ColorPicker from "./ColorPicker";
+import SizeSelector from "./SizeSelector";
+import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
 
 interface ProductFormProps {
   initialData?: any;
@@ -50,7 +54,7 @@ const ProductForm = ({
         <Input
           id="name"
           type="text"
-          placeholder="Enter current password"
+          placeholder="Enter Product Name"
           className="h-11 rounded-xl border-slate-200"
           // {...register("")}
         />
@@ -120,6 +124,107 @@ const ProductForm = ({
           )}
         />
       </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <label
+            htmlFor="images"
+            className="inline-flex items-center gap-2 text-sm font-medium text-slate-600"
+          >
+            Category
+          </label>
+          <Controller
+            control={control}
+            name="category"
+            render={({ field }) => (
+              <CategorySelect value={field.value} onChange={field.onChange} />
+            )}
+          />
+        </div>
+
+        <div className="space-y-2">
+          <label
+            htmlFor="sizes"
+            className="inline-flex items-center gap-2 text-sm font-medium text-slate-600"
+          >
+            Sizes
+          </label>
+          <Controller
+            control={control}
+            name="sizes"
+            render={({ field }) => (
+              <SizeSelector sizes={field.value} onChange={field.onChange} />
+            )}
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4 ">
+        <div className="space-y-2 col-span-1">
+          <label
+            htmlFor="colors"
+            className="inline-flex items-center gap-2 text-sm font-medium text-slate-600"
+          >
+            Colors
+          </label>
+          <Controller
+            control={control}
+            name="colors"
+            render={({ field }) => (
+              <ColorPicker colors={field.value} onChange={field.onChange} />
+            )}
+          />
+        </div>
+        <div className="col-span-1 rounded-md border px-4 py-2 flex items-center justify-between gap-4">
+          <div className="space-y-2 col-span-1 flex items-center gap-4 ">
+            <label
+              htmlFor="is_new_arrival"
+              className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 mb-0"
+            >
+              Is New Arrival
+            </label>
+            <Controller
+              control={control}
+              name="is_new_arrival"
+              render={({ field }) => (
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  className="mb-0"
+                ></Switch>
+              )}
+            />
+          </div>
+
+          <div className="space-y-2 col-span-1 flex items-center gap-4">
+            <label
+              htmlFor="is_feature"
+              className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 mb-0"
+            >
+              Featured Product
+            </label>
+            <Controller
+              control={control}
+              name="is_feature"
+              render={({ field }) => (
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  className="mb-0"
+                ></Switch>
+              )}
+            />
+          </div>
+        </div>
+      </div>
+
+      <Button type="submit" className=" w-full mt-4 p-5  " disabled={isLoading}>
+        {isLoading
+          ? "Saving..."
+          : initialData
+            ? "Update Product"
+            : "Create Product"}
+      </Button>
     </form>
   );
 };

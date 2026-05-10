@@ -1,7 +1,9 @@
 import ProductForm from "./ProductForm";
 
 const ProductCreate = () => {
-  return <ProductForm />;
+  const onSubmit = () => {};
+  const isLoading = false;
+  return <ProductForm onSubmit={onSubmit} isLoading={isLoading} />;
 };
 
 export default ProductCreate;
