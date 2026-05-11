@@ -1,5 +1,5 @@
+import SideBar from "@/components/admin/SideBar";
 import { Outlet } from "react-router";
-import SideBar from "./SideBar";
 
 const Panel = () => {
   return (

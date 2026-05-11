@@ -5,9 +5,10 @@ import { Controller, useForm } from "react-hook-form";
 import ImageUpload from "./ImageUpload";
 import CategorySelect from "./CategorySelect";
 import ColorPicker from "./ColorPicker";
-import SizeSelector from "./SizeSelector";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
+import SizeSelector from "./SizeSelector";
+import Tiptap from "../editor/TipTap";
 
 interface ProductFormProps {
   initialData?: any;
@@ -60,20 +61,21 @@ const ProductForm = ({
         />
       </div>
 
-      {/* <div className="space-y-2 md:col-span-2">
+      <div className="space-y-2 col-span-1 flex flex-col gap-2  ">
         <label
-          htmlFor="new-password"
-          className="inline-flex items-center gap-2 text-sm font-medium text-slate-600"
+          htmlFor="description"
+          className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 mb-0"
         >
-         Description
+          Product Description
         </label>
-        <Input
-          type="password"
-          placeholder="Enter new password"
-          // {...register("")}
-          className="h-11 rounded-xl border-slate-200"
+        <Controller
+          control={control}
+          name="description"
+          render={({ field }) => (
+            <Tiptap value={field.value} onChange={field.onChange} />
+          )}
         />
-      </div> */}
+      </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2 col-span-1">
