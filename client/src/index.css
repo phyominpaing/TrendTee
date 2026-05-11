@@ -146,3 +146,8 @@ body {
     @apply font-sans;
   }
 }
+
+.ProseMirror-focused {
+  outline: none !important;
+  box-shadow: none !important;
+}
