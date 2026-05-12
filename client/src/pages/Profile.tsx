@@ -248,13 +248,6 @@ const Profile = () => {
             </p>
 
             <div className={`relative mt-5 ${!avatar ? "hidden" : ""}`}>
-              {/* <Button
-                type="button"
-                onClick={() => setAvatar(null)}
-                className="absolute -top-2.5 -right-1 z-10 h-6 w-6 rounded-full border-2 border-slate-200 bg-white p-0 text-slate-600 shadow-md hover:bg-slate-100 hover:text-slate-900"
-              >
-                <X className="size-3" />
-              </Button> */}
 
               <Button
                 type="button"

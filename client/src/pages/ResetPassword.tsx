@@ -113,9 +113,6 @@ const ResetPassword = () => {
                   >
                     New Password
                   </FieldLabel>
-                  {/* <span className="text-xs font-medium text-slate-400">
-                    Minimum 6 characters
-                  </span> */}
                 </div>
                 <div className="relative">
                   <LockKeyhole className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-slate-400" />

@@ -57,7 +57,6 @@ const ProductForm = ({
           type="text"
           placeholder="Enter Product Name"
           className="h-11 rounded-xl border-slate-200"
-          // {...register("")}
         />
       </div>
 

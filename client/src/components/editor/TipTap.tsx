@@ -51,7 +51,7 @@ const Tiptap = ({ value, onChange }: TipTapProps) => {
           <List className="h-4 w-4" />
         </Button>
 
-        <Button
+        <Button 
           type="button"
           size={"sm"}
           variant={editor.isActive("orderedList") ? "default" : "outline"}
