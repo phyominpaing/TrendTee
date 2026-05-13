@@ -22,14 +22,11 @@ export const createProductValidator = [
     .isArray({ min: 1 })
     .notEmpty()
     .withMessage("Product images is required"),
-  body("images.*.url")
-    .isString()
+  body("images.*.file").notEmpty().withMessage("Each image url must has url"),
+  body("images.*.preview")
     .notEmpty()
-    .withMessage("Each image url must has url"),
-  body("images.*.public_alt")
-    .isString()
-    .notEmpty()
-    .withMessage("Each image url must has public_alt"),
+    .withMessage("Each image url must has preview"),
+
   body("is_new_arrival")
     .isBoolean()
     .notEmpty()

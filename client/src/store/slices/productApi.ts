@@ -80,4 +80,5 @@ export const {
   useGetProductDetailsQuery,
   useGetProductsQuery,
   useGetProductsMetaQuery,
+  useCreateProductMutation,
 } = productApiSlice;
