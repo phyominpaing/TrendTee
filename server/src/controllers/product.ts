@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import asyncHandler from "../utils/asyncHandler.ts";
 import { Product } from "../models/product.ts";
 import type { AuthRequest } from "../middlewares/authMiddleware.ts";
+import { uploadSingleImage } from "../utils/cloudinary.ts";
 
 // @route POST - api/products
 // @desc Create a new product
@@ -22,6 +23,23 @@ export const createProduct = asyncHandler(
       rating_count,
     } = req.body;
 
+    const uploadedImages = await Promise.all(
+      images.map(async (image: { file?: string; public_alt?: string }) => {
+        if (image.file) {
+          const uploadedImg = await uploadSingleImage(
+            image.file,
+            "trendtee.com/products",
+          );
+          return {
+            url: uploadedImg.image_url,
+            public_alt: uploadedImg.public_alt,
+          };
+        }
+
+        return image;
+      }),
+    );
+
     const newProduct = await Product.create({
       name,
       description,
@@ -30,7 +48,7 @@ export const createProduct = asyncHandler(
       category,
       sizes,
       colors,
-      images,
+      images: uploadedImages,
       is_new_arrival,
       is_feature,
       rating_count,

@@ -11,7 +11,7 @@ import SizeSelector from "./SizeSelector";
 import Tiptap from "../editor/TipTap";
 
 interface ProductFormProps {
-  initialData?: any;
+  initialData?: ProductFormInputs;
   onSubmit: (data: ProductFormInputs) => void;
   isLoading: boolean;
 }
@@ -20,11 +20,11 @@ const ProductForm = ({
   onSubmit,
   isLoading,
 }: ProductFormProps) => {
+
   const {
     register,
     handleSubmit,
     control,
-    reset,
     // formState: { errors, isSubmitting },
   } = useForm<ProductFormInputs>({
     resolver: zodResolver(productSchema),
@@ -57,6 +57,7 @@ const ProductForm = ({
           type="text"
           placeholder="Enter Product Name"
           className="h-11 rounded-xl border-slate-200"
+          {...register("name")}
         />
       </div>
 
@@ -219,7 +220,7 @@ const ProductForm = ({
         </div>
       </div>
 
-      <Button type="submit" className=" w-full mt-4 p-5  " disabled={isLoading}>
+      <Button type="submit" className=" w-full mt-4 p-5" disabled={isLoading}>
         {isLoading
           ? "Saving..."
           : initialData

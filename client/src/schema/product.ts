@@ -11,7 +11,7 @@ export const productSchema = z.object({
   instock_count: z.number(),
   category: z.string().min(1, "Category is required"),
   sizes: z
-    .array(z.enum(["xs,sm,lg,xl,xxl"]))
+    .array(z.enum(["xs", "sm", "lg", "xl", "xxl"]))
     .min(1, "At least one size must be selected"),
   colors: z.array(z.string()).min(1, "At least one color must be selected"),
   images: z

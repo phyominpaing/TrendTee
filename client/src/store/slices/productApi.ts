@@ -1,5 +1,6 @@
 import type { Product, ProductMeta } from "@/types/product";
 import { apiSlice } from "./api";
+import type { ProductFormInputs } from "@/schema/product";
 
 export const productApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -43,7 +44,7 @@ export const productApiSlice = apiSlice.injectEndpoints({
             searchParams.append("color", color),
           );
         console.log(colors);
-        console.log(searchParams.toString()); 
+        console.log(searchParams.toString());
 
         if (category) searchParams.append("category", category);
         if (minPrice) searchParams.append("minPrice", minPrice.toString());
@@ -59,6 +60,16 @@ export const productApiSlice = apiSlice.injectEndpoints({
         method: "GET",
         credentials: "include",
       }),
+    }),
+
+    createProduct: builder.mutation<Product, ProductFormInputs>({
+      query: (productData) => ({
+        url: "/products",
+        method: "POST",
+        credentials: "include",
+        body: productData,
+      }),
+      invalidatesTags: ["Product"],
     }),
   }),
 });
