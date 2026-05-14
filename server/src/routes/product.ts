@@ -16,6 +16,7 @@ import {
   updateProductValidator,
 } from "../validators/product.ts";
 import { validateRequest } from "../middlewares/validateRequest.ts";
+import { upload } from "../utils/upload.ts";
 
 const router = Router();
 
@@ -25,6 +26,7 @@ router.post(
   isAdmin,
   createProductValidator,
   validateRequest,
+  upload.array("images"),
   createProduct,
 );
 

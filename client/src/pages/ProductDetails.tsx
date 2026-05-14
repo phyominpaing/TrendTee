@@ -100,7 +100,7 @@ const ProductDetails = () => {
               key={index}
               className={` border border-gray-300 text-gray-600 text-sm rounded-md px-4 py-1 cursor-pointer ${selectedSize === size ? "bg-black text-white" : ""}`}
             >
-              {size}
+              {size.toUpperCase()}
             </div>
           ))}
         </div>

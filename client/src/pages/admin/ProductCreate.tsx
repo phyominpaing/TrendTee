@@ -7,7 +7,7 @@ import { toast } from "sonner";
 const ProductCreate = () => {
   const [createProduct, { isLoading }] = useCreateProductMutation();
   const navigate = useNavigate();
- 
+
   const onSubmit = async (data: ProductFormInputs) => {
     try {
       const response = await createProduct(data).unwrap();
@@ -15,7 +15,7 @@ const ProductCreate = () => {
       console.log(data);
 
       toast.success("Product created successfully.");
-      navigate("/products");
+      navigate("/admin/products");
     } catch (error) {
       toast.error("Failed to create product. Please try again.");
     }

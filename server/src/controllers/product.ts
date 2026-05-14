@@ -23,6 +23,18 @@ export const createProduct = asyncHandler(
       rating_count,
     } = req.body;
 
+    // const ValidSizes = Array.isArray(sizes) ? sizes : [sizes];
+    // const ValidColors = Array.isArray(colors) ? colors : [colors];
+
+    // const ValidPrice = Number(price);
+    // const ValidInstock_count = Number(instock_count);
+    // const ValidRating_count = Number(rating_count);
+
+    // const ValidIs_new_arrival = Boolean(is_new_arrival);
+    // const ValidIs_feature = Boolean(is_feature);
+
+    // const files = req.files as Express.Multer.File[];
+
     const uploadedImages = await Promise.all(
       images.map(async (image: { file?: string; public_alt?: string }) => {
         if (image.file) {
