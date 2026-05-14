@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import SizeSelector from "./SizeSelector";
 import Tiptap from "../editor/TipTap";
 import { FieldError } from "@/components/ui/field";
+import { useEffect } from "react";
 
 interface ProductFormProps {
   initialData?: ProductFormInputs;
@@ -21,27 +22,68 @@ const ProductForm = ({
   onSubmit,
   isLoading,
 }: ProductFormProps) => {
+  console.log(initialData);
+
   const {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm<ProductFormInputs>({
     resolver: zodResolver(productSchema),
-    defaultValues: initialData || {
-      name: "",
-      description: "",
-      price: 0,
-      instock_count: 0,
-      category: "",
-      sizes: [],
-      colors: [],
-      is_feature: false,
-      is_new_arrival: false,
-      rating_count: 0,
-      images: [],
-    },
+    defaultValues: initialData
+      ? {
+          name: initialData.name,
+          description: initialData.description,
+          price: initialData.price,
+          instock_count: initialData.instock_count,
+          category: initialData.category,
+          sizes: initialData.sizes,
+          colors: initialData.colors,
+          is_feature: initialData.is_feature,
+          is_new_arrival: initialData.is_new_arrival,
+          rating_count: initialData.rating_count,
+          images: initialData.images.map((image) => ({
+            url: image.url,
+            public_alt: image.public_alt,
+          })),
+        }
+      : {
+          name: "",
+          description: "",
+          price: 0,
+          instock_count: 0,
+          category: "",
+          sizes: [],
+          colors: [],
+          is_feature: false,
+          is_new_arrival: false,
+          rating_count: 0,
+          images: [],
+        },
   });
+
+  useEffect(() => {
+    if (initialData) {
+      reset({
+        name: initialData.name,
+        description: initialData.description,
+        price: initialData.price,
+        instock_count: initialData.instock_count,
+        category: initialData.category,
+        sizes: initialData.sizes,
+        colors: initialData.colors,
+        is_feature: initialData.is_feature,
+        is_new_arrival: initialData.is_new_arrival,
+        rating_count: initialData.rating_count,
+        images: initialData.images.map((image) => ({
+          url: image.url,
+          public_alt: image.public_alt,
+        })),
+      });
+    }
+  }, [initialData, reset]);
 
   const toFieldErrors = (message?: string) =>
     message ? [{ message }] : undefined;
@@ -63,7 +105,10 @@ const ProductForm = ({
           aria-invalid={!!errors.name}
           {...register("name")}
         />
-        <FieldError className="text-sm" errors={toFieldErrors(errors.name?.message)} />
+        <FieldError
+          className="text-sm"
+          errors={toFieldErrors(errors.name?.message)}
+        />
       </div>
 
       <div className="space-y-2 col-span-1 flex flex-col gap-2  ">

@@ -71,11 +71,11 @@ const ProductDetails = () => {
 
       <div className="flex flex-col justify-between">
         <h2 className="text-3xl font-medium mb-2">{product.name}</h2>
-        <RatingConverter count={product.rating} />
+        <RatingConverter count={product.rating_count} />
         <p className="text-xl font-semibold my-4">${product.price}</p>
-        <p className="text-sm font-medium text-gray-400">
-          {product.description}
-        </p>
+        <div className="text-sm font-medium text-gray-400" dangerouslySetInnerHTML={{__html : product.description}}/>
+
+       
         <hr className="mt-4 text-gray-300" />
 
         <h2 className="text-lg font-semibold my-2 text-slate-600">Colors</h2>

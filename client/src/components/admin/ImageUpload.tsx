@@ -3,9 +3,9 @@ import { fileToBase64 } from "@/lib/utils";
 import { X } from "lucide-react";
 
 interface ImageUploadProps {
-  images: Array<{ preview: string; public_alt?: string }>;
+  images: Array<{ url: string; public_alt?: string }>;
   onChange: (
-    images: Array<{ preview: string; file?: string; public_alt?: string }>,
+    images: Array<{ url: string; file?: string; public_alt?: string }>,
   ) => void;
 }
 const ImageUpload = ({ images, onChange }: ImageUploadProps) => {
@@ -15,7 +15,7 @@ const ImageUpload = ({ images, onChange }: ImageUploadProps) => {
     const newImages = await Promise.all(
       files.map(async (file) => ({
         file: await fileToBase64(file),
-        preview: URL.createObjectURL(file),
+        url: URL.createObjectURL(file),
         // public_alt: "",
       })),
     );
@@ -26,8 +26,8 @@ const ImageUpload = ({ images, onChange }: ImageUploadProps) => {
   const removeImage = (index: number) => {
     const newImages = [...images];
 
-    if (images[index].preview.startsWith("blob:")) {
-      URL.revokeObjectURL(newImages[index].preview);
+    if (images[index].url.startsWith("blob:")) {
+      URL.revokeObjectURL(newImages[index].url);
     }
 
     newImages.splice(index, 1);
@@ -39,7 +39,7 @@ const ImageUpload = ({ images, onChange }: ImageUploadProps) => {
         {images.map((img, index) => (
           <div key={index} className="relative group inline-block mr-2 mb-2">
             <img
-              src={img.preview}
+              src={img.url}
               alt={`Preview ${index}`}
               className="w-24 h-24 object-cover rounded"
             />

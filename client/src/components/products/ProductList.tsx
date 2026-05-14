@@ -102,7 +102,7 @@ const ProductList = ({ products }: ProductListProps) => {
           _id={product._id}
           name={product.name}
           image={product.images[0].url}
-          ratingCount={product.rating}
+          ratingCount={product.rating_count}
           price={product.price}
         />
       ))}
