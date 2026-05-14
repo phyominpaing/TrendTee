@@ -1,21 +1,24 @@
 import { Button } from "@/components/ui/button";
+import { fileToBase64 } from "@/lib/utils";
 import { X } from "lucide-react";
 
 interface ImageUploadProps {
   images: Array<{ preview: string; public_alt?: string }>;
   onChange: (
-    images: Array<{ preview: string; file?: File; public_alt?: string }>,
+    images: Array<{ preview: string; file?: string; public_alt?: string }>,
   ) => void;
 }
 const ImageUpload = ({ images, onChange }: ImageUploadProps) => {
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
 
-    const newImages = files.map((file) => ({
-      preview: URL.createObjectURL(file),
-      file,
-      public_alt: "",
-    }));
+    const newImages = await Promise.all(
+      files.map(async (file) => ({
+        file: await fileToBase64(file),
+        preview: URL.createObjectURL(file),
+        // public_alt: "",
+      })),
+    );
 
     onChange([...images, ...newImages]);
   };

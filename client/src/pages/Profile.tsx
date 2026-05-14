@@ -248,7 +248,6 @@ const Profile = () => {
             </p>
 
             <div className={`relative mt-5 ${!avatar ? "hidden" : ""}`}>
-
               <Button
                 type="button"
                 onClick={avatarUploadHandler}

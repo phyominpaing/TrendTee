@@ -47,7 +47,7 @@ const ProductDetails = () => {
   return (
     <section className="grid grid-cols-2 gap-8">
       <div className="grid grid-cols-4">
-        <div className="col-span-1 flex flex-col items-center justify-center gap-4">
+        <div className="col-span-1 flex flex-col items-center justify-start gap-4">
           {product.images.map((image: ProductImage, index: number) => (
             <div
               key={index}

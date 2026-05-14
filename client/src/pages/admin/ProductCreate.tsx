@@ -12,8 +12,10 @@ const ProductCreate = () => {
     try {
       const response = await createProduct(data).unwrap();
       console.log(response);
+      console.log(data);
+
       toast.success("Product created successfully.");
-      navigate("/admin/products");
+      navigate("/products");
     } catch (error) {
       toast.error("Failed to create product. Please try again.");
     }
