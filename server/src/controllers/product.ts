@@ -107,19 +107,19 @@ export const updateProduct = asyncHandler(
       throw new Error("Product not found.");
     }
 
-    existingProduct.name = name || existingProduct.name;
-    existingProduct.description = description || existingProduct.description;
-    existingProduct.price = price || existingProduct.price;
+    existingProduct.name = name ?? existingProduct.name;
+    existingProduct.description = description ?? existingProduct.description;
+    existingProduct.price = price ?? existingProduct.price;
     existingProduct.instock_count =
-      instock_count || existingProduct.instock_count;
-    existingProduct.category = category || existingProduct.category;
-    existingProduct.sizes = sizes || existingProduct.sizes;
-    existingProduct.colors = colors || existingProduct.colors;
-    existingProduct.images = images || existingProduct.images;
+      instock_count ?? existingProduct.instock_count;
+    existingProduct.category = category ?? existingProduct.category;
+    existingProduct.sizes = sizes ?? existingProduct.sizes;
+    existingProduct.colors = colors ?? existingProduct.colors;
+    existingProduct.images = images ?? existingProduct.images;
     existingProduct.is_new_arrival =
-      is_new_arrival || existingProduct.is_new_arrival;
-    existingProduct.is_feature = is_feature || existingProduct.is_feature;
-    existingProduct.rating_count = rating_count || existingProduct.rating_count;
+      is_new_arrival ?? existingProduct.is_new_arrival;
+    existingProduct.is_feature = is_feature ?? existingProduct.is_feature;
+    existingProduct.rating_count = rating_count ?? existingProduct.rating_count;
 
     const updatedProduct = await existingProduct.save();
 
