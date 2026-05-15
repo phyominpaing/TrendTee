@@ -16,13 +16,14 @@ interface ProductFormProps {
   initialData?: ProductFormInputs;
   onSubmit: (data: ProductFormInputs) => void;
   isLoading: boolean;
+  isUpdating?: boolean;
 }
 const ProductForm = ({
   initialData,
   onSubmit,
   isLoading,
+  isUpdating,
 }: ProductFormProps) => {
-  console.log(initialData);
 
   const {
     register,
@@ -279,8 +280,8 @@ const ProductForm = ({
         </div>
       </div>
 
-      <Button type="submit" className=" w-full mt-4 p-5" disabled={isLoading}>
-        {isLoading
+      <Button type="submit" className=" w-full mt-4 p-5" disabled={isLoading || isUpdating}>
+        {isLoading || isUpdating
           ? "Saving..."
           : initialData
             ? "Update Product"

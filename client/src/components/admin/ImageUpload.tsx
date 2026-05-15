@@ -49,7 +49,7 @@ const ImageUpload = ({ images, onChange }: ImageUploadProps) => {
               onClick={() => removeImage(index)}
             >
               {" "}
-              <X className="size-4 text-white" />{" "}
+              <X className="size-4 text-white" />{" "}  
             </button>
           </div>
         ))}

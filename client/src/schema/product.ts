@@ -20,7 +20,7 @@ export const productSchema = z.object({
   images: z
     .array(
       z.object({
-        file: z.instanceof(File).optional(),
+        file: z.string().optional(),
         url: z.string(),
         public_alt: z.string().optional(),
       }),

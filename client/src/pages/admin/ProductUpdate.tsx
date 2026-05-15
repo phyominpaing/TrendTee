@@ -1,34 +1,36 @@
 import type { ProductFormInputs } from "@/schema/product";
 import ProductForm from "../../components/admin/ProductForm";
 import {
-  useCreateProductMutation,
   useGetProductDetailsQuery,
+  useUpdateProductMutation,
 } from "@/store/slices/productApi";
 import { useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
 import { useEffect } from "react";
 
 const ProductUpdate = () => {
-  //   const [createProduct, { isLoading }] = useCreateProductMutation();
+  const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
   const { id } = useParams();
 
-  const { data: initialData, isLoading , isError } = useGetProductDetailsQuery(
-    id as string,
-  );
+  const {
+    data: initialData,
+    isLoading,
+    isError,
+  } = useGetProductDetailsQuery(id as string);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isError) {
+    if (isError || !id) {
       navigate("/admin");
     }
   }, [isError]);
 
   const onSubmit = async (data: ProductFormInputs) => {
     try {
-      //   const response = await createProduct(data).unwrap();
+      await updateProduct({ id: id as string, data }).unwrap();
       console.log(data);
 
-      toast.success("Product created successfully.");
+      toast.success("Update product successfully.");
       navigate("/admin/products");
     } catch (error) {
       toast.error("Failed to create product. Please try again.");
@@ -44,6 +46,7 @@ const ProductUpdate = () => {
         onSubmit={onSubmit}
         isLoading={isLoading}
         initialData={initialData}
+        isUpdating={isUpdating}
       />
     </section>
   );
