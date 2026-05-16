@@ -2,7 +2,13 @@ import type { Request, Response } from "express";
 import asyncHandler from "../utils/asyncHandler.ts";
 import { Product } from "../models/product.ts";
 import type { AuthRequest } from "../middlewares/authMiddleware.ts";
-import { uploadSingleImage } from "../utils/cloudinary.ts";
+import { deleteImage, uploadSingleImage } from "../utils/cloudinary.ts";
+
+type ProductImageInput = {
+  file?: string;
+  url?: string;
+  public_alt?: string;
+};
 
 // @route POST - api/products
 // @desc Create a new product
@@ -107,6 +113,49 @@ export const updateProduct = asyncHandler(
       throw new Error("Product not found.");
     }
 
+    const incomingImages = Array.isArray(images)
+      ? (images as ProductImageInput[])
+      : undefined;
+
+    const imagesToDelete = incomingImages
+      ? existingProduct.images.filter((image) => {
+          return !incomingImages.some(
+            (img) => img.public_alt === image.public_alt,
+          );
+        })
+      : [];
+
+    // upload new images
+    const uploadedImages: { url: string; public_alt: string }[] | undefined =
+      incomingImages
+        ? await Promise.all(
+            incomingImages.map(async (image) => {
+              if (image.file) {
+                const uploadedImg = await uploadSingleImage(
+                  image.file,
+                  "trendtee.com/products",
+                );
+                return {
+                  url: uploadedImg.image_url,
+                  public_alt: uploadedImg.public_alt,
+                };
+              }
+
+              if (!image.url || !image.public_alt) {
+                res.status(400);
+                throw new Error(
+                  "Existing product images must include url and public_alt.",
+                );
+              }
+
+              return {
+                url: image.url,
+                public_alt: image.public_alt,
+              };
+            }),
+          )
+        : undefined;
+
     existingProduct.name = name ?? existingProduct.name;
     existingProduct.description = description ?? existingProduct.description;
     existingProduct.price = price ?? existingProduct.price;
@@ -115,7 +164,7 @@ export const updateProduct = asyncHandler(
     existingProduct.category = category ?? existingProduct.category;
     existingProduct.sizes = sizes ?? existingProduct.sizes;
     existingProduct.colors = colors ?? existingProduct.colors;
-    existingProduct.images = images ?? existingProduct.images;
+    existingProduct.images = uploadedImages ?? existingProduct.images;
     existingProduct.is_new_arrival =
       is_new_arrival ?? existingProduct.is_new_arrival;
     existingProduct.is_feature = is_feature ?? existingProduct.is_feature;
@@ -124,6 +173,22 @@ export const updateProduct = asyncHandler(
     const updatedProduct = await existingProduct.save();
 
     if (updatedProduct) {
+      if (imagesToDelete.length > 0) {
+        await Promise.all(
+          imagesToDelete.map(async (image) => {
+            if (image.public_alt) {
+              try {
+                await deleteImage(image.public_alt);
+              } catch (error) {
+                console.log(
+                  `Error deleting image ${image.public_alt}: ${error}`,
+                );
+              }
+            }
+          }),
+        );
+      }
+
       res.status(200).json({
         message: `Product ${updatedProduct.name} updated successfully.`,
         product: updatedProduct,

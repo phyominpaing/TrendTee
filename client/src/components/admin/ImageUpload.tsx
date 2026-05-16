@@ -3,7 +3,7 @@ import { fileToBase64 } from "@/lib/utils";
 import { X } from "lucide-react";
 
 interface ImageUploadProps {
-  images: Array<{ url: string; public_alt?: string }>;
+  images: Array<{ url: string; file ?: string; public_alt?: string }>;
   onChange: (
     images: Array<{ url: string; file?: string; public_alt?: string }>,
   ) => void;
@@ -41,7 +41,7 @@ const ImageUpload = ({ images, onChange }: ImageUploadProps) => {
             <img
               src={img.url}
               alt={`Preview ${index}`}
-              className="w-24 h-24 object-cover rounded"
+              className={`w-24 h-24 object-cover rounded ${img.file && "border border-black"}`}
             />
             <button
               type="button"

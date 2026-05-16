@@ -24,7 +24,6 @@ const ProductForm = ({
   isLoading,
   isUpdating,
 }: ProductFormProps) => {
-
   const {
     register,
     handleSubmit,
@@ -113,7 +112,7 @@ const ProductForm = ({
       </div>
 
       <div className="space-y-2 col-span-1 flex flex-col gap-2  ">
-        <label
+        <label  
           htmlFor="description"
           className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 mb-0"
         >
@@ -280,7 +279,11 @@ const ProductForm = ({
         </div>
       </div>
 
-      <Button type="submit" className=" w-full mt-4 p-5" disabled={isLoading || isUpdating}>
+      <Button
+        type="submit"
+        className=" w-full mt-4 p-5"
+        disabled={isLoading || isUpdating}
+      >
         {isLoading || isUpdating
           ? "Saving..."
           : initialData

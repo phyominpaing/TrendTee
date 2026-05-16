@@ -23,17 +23,28 @@ const ProductUpdate = () => {
     if (isError || !id) {
       navigate("/admin");
     }
-  }, [isError]);
+  }, [id, isError, navigate]);
 
   const onSubmit = async (data: ProductFormInputs) => {
+    if (!id) return;
+
     try {
-      await updateProduct({ id: id as string, data }).unwrap();
-      console.log(data);
+      const existingImages = data.images.filter(
+        (img) => !img.file && img.url && img.public_alt,
+      );
+      const newImages = data.images.filter((img) => img.file);
+
+      const payload = {
+        ...data,
+        images: [...existingImages, ...newImages],
+      };
+
+      await updateProduct({ id, data: payload }).unwrap();
 
       toast.success("Update product successfully.");
       navigate("/admin/products");
-    } catch (error) {
-      toast.error("Failed to create product. Please try again.");
+    } catch {
+      toast.error("Failed to update product. Please try again.");
     }
   };
 

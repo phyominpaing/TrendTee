@@ -26,7 +26,7 @@ const Tiptap = ({ value, onChange }: TipTapProps) => {
   if (!editor) return null;
 
   return (
-    <div className="border rounded-lg p-2">
+    <div className="rounded-lg border p-2 transition-colors has-[.ProseMirror:focus-visible]:border-ring has-[.ProseMirror:focus-visible]:ring-1 has-[.ProseMirror:focus-visible]:ring-ring/50">
       <div className="flex items-center gap-2 mb-4">
         <Button
           type="button"
@@ -61,7 +61,10 @@ const Tiptap = ({ value, onChange }: TipTapProps) => {
           <List className="h-4 w-4" />
         </Button>
       </div>
-      <EditorContent editor={editor} className="prose" />
+      <EditorContent
+        editor={editor}
+        className="prose max-w-none [&_.ProseMirror]:outline-none"
+      />
     </div>
   );
 };

@@ -9,6 +9,8 @@ const ProductCreate = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data: ProductFormInputs) => {
+    console.log(data);
+    
     try {
       const response = await createProduct(data).unwrap();
       console.log(response);

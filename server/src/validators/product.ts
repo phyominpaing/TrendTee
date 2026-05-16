@@ -23,9 +23,9 @@ export const createProductValidator = [
     .notEmpty()
     .withMessage("Product images is required"),
   body("images.*.file").notEmpty().withMessage("Each image url must has url"),
-  body("images.*.preview")
+  body("images.*.url")
     .notEmpty()
-    .withMessage("Each image url must has preview"),
+    .withMessage("Each image url must has url"),
 
   body("is_new_arrival")
     .isBoolean()
