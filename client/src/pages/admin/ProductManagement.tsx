@@ -1,4 +1,5 @@
 import ProductStatusCard from "@/components/admin/ProductStatusCard";
+import ProductTable from "@/components/products/ProductTable";
 import {
   Card,
   CardContent,
@@ -46,7 +47,7 @@ const ProductManagement = () => {
         <p className="text-muted-foreground">Manage your products inventory</p>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-4 mb-8">
         <ProductStatusCard
           title="Total Products"
           isLoading={isLoading}
@@ -58,14 +59,25 @@ const ProductManagement = () => {
           isLoading={isLoading}
           value={products.filter((product) => product.instock_count > 0).length}
         />
-         <ProductStatusCard
+        <ProductStatusCard
           title="Outof stock Products"
           iconColor="text-destructive"
           isLoading={isLoading}
-          value={products.filter((product) => product.instock_count === 0).length}
+          value={
+            products.filter((product) => product.instock_count === 0).length
+          }
         />
-
       </div>
+
+      <Card className="p-6">
+        <CardHeader>
+          <CardTitle>Product Inventory</CardTitle>
+          <CardDescription>Manage and sort your products</CardDescription>
+        </CardHeader>
+        <CardContent>
+            <ProductTable data={products}/>
+        </CardContent>
+      </Card>
     </div>
   );
 };

@@ -15,6 +15,7 @@ export interface Product {
   is_feature: boolean;
   rating_count: number;
   images: ProductImage[];
+  createdAt : string | Date;
 }
 
 export interface ProductMeta {
