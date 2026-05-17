@@ -1,5 +1,6 @@
 import ProductStatusCard from "@/components/admin/ProductStatusCard";
 import ProductTable from "@/components/products/ProductTable";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -10,7 +11,8 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetProductsQuery } from "@/store/slices/productApi";
 import type { Product } from "@/types/product";
-import { DatabaseIcon } from "lucide-react";
+import { DatabaseIcon, Plus } from "lucide-react";
+import { Link } from "react-router";
 
 const ProductManagement = () => {
   const {
@@ -44,7 +46,17 @@ const ProductManagement = () => {
     <div>
       <div className="mb-8">
         <h1 className="text-2xl font-semibold ">Products</h1>
-        <p className="text-muted-foreground">Manage your products inventory</p>
+        <div className="flex items-center justify-between">
+          <p className="text-muted-foreground">
+            Manage your products inventory
+          </p>
+          <Button variant={"outline"}>
+            <div className="flex items-center gap-1">
+              <Plus />
+              <Link to={"/admin/create-product"}>Create New Product</Link>
+            </div>
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-3 gap-4 mb-8">
@@ -75,7 +87,7 @@ const ProductManagement = () => {
           <CardDescription>Manage and sort your products</CardDescription>
         </CardHeader>
         <CardContent>
-            <ProductTable data={products}/>
+          <ProductTable data={products} />
         </CardContent>
       </Card>
     </div>

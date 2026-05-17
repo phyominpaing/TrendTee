@@ -10,6 +10,7 @@ export const productApiSlice = apiSlice.injectEndpoints({
         method: "GET",
         credentials: "include",
       }),
+      providesTags: ["Product"],
     }),
     getFeatured: builder.query({
       query: () => ({
@@ -17,6 +18,7 @@ export const productApiSlice = apiSlice.injectEndpoints({
         method: "GET",
         credentials: "include",
       }),
+      providesTags: ["Product"],
     }),
     getProductDetails: builder.query<Product, string>({
       query: (id: string) => ({
@@ -24,6 +26,7 @@ export const productApiSlice = apiSlice.injectEndpoints({
         method: "GET",
         credentials: "include",
       }),
+      providesTags: ["Product"],
     }),
     getProducts: builder.query({
       query: ({
@@ -53,6 +56,7 @@ export const productApiSlice = apiSlice.injectEndpoints({
         if (keyword) searchParams.append("keyword", keyword);
         return `/products?${searchParams.toString()}`;
       },
+      providesTags: ["Product"],
     }),
     getProductsMeta: builder.query<ProductMeta, string>({
       query: () => ({
@@ -60,6 +64,7 @@ export const productApiSlice = apiSlice.injectEndpoints({
         method: "GET",
         credentials: "include",
       }),
+      providesTags: ["Product"],
     }),
 
     createProduct: builder.mutation<Product, ProductFormInputs>({
@@ -71,12 +76,23 @@ export const productApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Product"],
     }),
-    updateProduct: builder.mutation< Product,{ id: string; data: ProductFormInputs }>({
+    updateProduct: builder.mutation<
+      Product,
+      { id: string; data: ProductFormInputs }
+    >({
       query: ({ id, data }) => ({
         url: `/products/${id}`,
         method: "PUT",
         credentials: "include",
         body: data,
+      }),
+      invalidatesTags: ["Product"],
+    }),
+    deleteProduct: builder.mutation<string, string>({
+      query: (id) => ({
+        url: `/products/${id}`,
+        method: "DELETE",
+        credentials: "include",
       }),
       invalidatesTags: ["Product"],
     }),
@@ -91,4 +107,5 @@ export const {
   useGetProductsMetaQuery,
   useCreateProductMutation,
   useUpdateProductMutation,
+  useDeleteProductMutation,
 } = productApiSlice;

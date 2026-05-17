@@ -17,7 +17,7 @@ const ProductCreate = () => {
       console.log(data);
 
       toast.success("Product created successfully.");
-      navigate("/admin/products");
+      navigate("/admin/manage-products");
     } catch (error) {
       toast.error("Failed to create product. Please try again.");
     }

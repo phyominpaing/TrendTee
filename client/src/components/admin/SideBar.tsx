@@ -14,11 +14,11 @@ const pages: Page[] = [
     path: "/admin/manage-products",
     icon: <Settings size={20} />,
   },
-  {
-    name: "Create New Product",
-    path: "/admin/create-product",
-    icon: <PackagePlus size={20} />,
-  },
+  // {
+  //   name: "Create New Product",
+  //   path: "/admin/create-product",
+  //   icon: <PackagePlus size={20} />,
+  // },
 ];
 const SideBar = () => {
   return (

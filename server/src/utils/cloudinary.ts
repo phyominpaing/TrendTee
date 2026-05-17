@@ -23,7 +23,7 @@ export const uploadSingleImage = async (image: string, folder_name: string) => {
 };
 
 export const deleteImage = async (public_alt: string) => {
-  const response = await cloudinary.uploader.destroy(public_alt);
+  const res = await cloudinary.uploader.destroy(public_alt);
 
-  return response?.result === "ok";
+  return res?.result === "ok";
 };

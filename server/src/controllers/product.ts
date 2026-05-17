@@ -214,7 +214,28 @@ export const deleteProduct = asyncHandler(
       throw new Error("Product not found.");
     }
 
-    await existingProduct.deleteOne();
+    const imagesToDelete = existingProduct.images.map(
+      (image) => image.public_alt,
+    );
+
+    try {
+      await existingProduct.deleteOne();
+
+      if (imagesToDelete.length > 0) {
+        await Promise.all(
+          imagesToDelete.map(async (publicId) => {
+            try {
+              await deleteImage(publicId);
+            } catch (error) {
+              console.log(`Error deleting image ${publicId}: ${error}`);
+            }
+          }),
+        );
+      }
+    } catch (error) {
+      res.status(400);
+      throw new Error("Failed to delete product.");
+    }
 
     res.status(200).json({
       message: `Product ${existingProduct.name} deleted successfully.`,

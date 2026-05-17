@@ -8,8 +8,46 @@ import {
   AvatarImage,
 } from "../avatar";
 import { Badge } from "../ui/badge";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { Button } from "../ui/button";
+import { Edit, Eye, MoreHorizontal, Trash } from "lucide-react";
+import { useNavigate } from "react-router";
+import { toast } from "sonner";
+import { useDeleteProductMutation } from "@/store/slices/productApi";
 
 const useProductColumns = (): ColumnDef<Product>[] => {
+  const navigate = useNavigate();
+
+  const [deleteProduct, { isLoading }] = useDeleteProductMutation();
+
+  const productDeleteHandler = async (id: string, name: string) => {
+    try {
+      await deleteProduct(id).unwrap();
+
+      toast.success(`Product ${name} deleted successfully.`);
+    } catch (error) {
+      toast.error("Failed to delete product. Please try again.");
+    }
+  };
+
   return [
     {
       accessorKey: "images",
@@ -104,7 +142,6 @@ const useProductColumns = (): ColumnDef<Product>[] => {
         );
       },
     },
-
     {
       accessorKey: "createdAt",
       header: "Created At",
@@ -121,6 +158,76 @@ const useProductColumns = (): ColumnDef<Product>[] => {
               {date.toLocaleDateString()}
             </span>
           </div>
+        );
+      },
+    },
+    {
+      id: "actions",
+      enableHiding: false,
+      cell: ({ row }) => {
+        const product = row.original;
+        return (
+          <AlertDialog>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent align="end" className="w-36">
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+
+                <DropdownMenuItem
+                  className="whitespace-nowrap"
+                  onClick={() => navigate(`/products/${product._id}`)}
+                >
+                  <Eye className=" h-4 w-4" />
+                  View details
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator />
+
+                <DropdownMenuItem
+                  className="whitespace-nowrap"
+                  onClick={() => navigate(`/admin/edit-product/${product._id}`)}
+                >
+                  <Edit className=" h-4 w-4" />
+                  Edit product
+                </DropdownMenuItem>
+
+                <AlertDialogTrigger asChild>
+                  <DropdownMenuItem className="whitespace-nowrap">
+                    <Trash className=" h-4 w-4" />
+                    Delete Product
+                  </DropdownMenuItem>
+                </AlertDialogTrigger>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete product?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This will permanently delete "{product.name}". This action
+                  cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  variant="destructive"
+                  onClick={() =>
+                    productDeleteHandler(product._id, product.name)
+                  }
+                >
+                  {isLoading ? "Deleting..." : "Delete"}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         );
       },
     },

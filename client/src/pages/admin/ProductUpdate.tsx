@@ -42,7 +42,7 @@ const ProductUpdate = () => {
       await updateProduct({ id, data: payload }).unwrap();
 
       toast.success("Update product successfully.");
-      navigate("/admin/products");
+      navigate("/admin/manage-products");
     } catch {
       toast.error("Failed to update product. Please try again.");
     }
