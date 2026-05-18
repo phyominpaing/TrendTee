@@ -3,6 +3,7 @@ import useProductColumns from "./ProductTableColumns";
 import {
   flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import {
@@ -13,6 +14,15 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
+import { useState } from "react";
+import { Button } from "../ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 interface ProductTableProps {
   data: Product[];
@@ -20,11 +30,20 @@ interface ProductTableProps {
 
 const ProductTable = ({ data }: ProductTableProps) => {
   const columns = useProductColumns();
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 5,
+  });
 
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    state: {
+      pagination,
+    },
+    onPaginationChange: setPagination,
   });
 
   return (
@@ -79,6 +98,53 @@ const ProductTable = ({ data }: ProductTableProps) => {
             )}
           </TableBody>
         </Table>
+
+        <div className="flex items-center justify-end space-x-4 pt-4">
+          {/* <select
+            value={String(table.getState().pagination.pageSize)}
+            onChange={(e) => table.setPageSize(Number(e.target.value))}
+          >
+            {
+              [5,10,20,50].map((size) => <option key={size} value={size}>Show {size}</option> )
+            }
+          </select> */}
+
+          <Select
+            value={String(table.getState().pagination.pageSize)}
+            onValueChange={(value) => table.setPageSize(Number(value))}
+          >
+            <SelectTrigger size="sm">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {[5, 10, 20, 50].map((size) => (
+                <SelectItem key={size} value={String(size)}>
+                  Show {size}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Button
+            size={"sm"}
+            variant={"outline"}
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Prev
+          </Button>
+          <span className="text-sm font-medium text-muted-foreground">
+            Page {table.getState().pagination.pageIndex + 1} of{" "}
+            {table.getPageCount()}{" "}
+          </span>
+          <Button
+            size={"sm"}
+            variant={"outline"}
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Next
+          </Button>
+        </div>
       </div>
     </div>
   );

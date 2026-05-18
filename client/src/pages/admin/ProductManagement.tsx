@@ -8,10 +8,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useGetProductsQuery } from "@/store/slices/productApi";
 import type { Product } from "@/types/product";
-import { DatabaseIcon, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Link } from "react-router";
 
 const ProductManagement = () => {
