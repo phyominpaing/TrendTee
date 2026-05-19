@@ -5,9 +5,10 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
+
+import type { SortingState } from "@tanstack/react-table";
 import {
   Table,
   TableBody,
@@ -46,11 +47,11 @@ const ProductTable = ({ data }: ProductTableProps) => {
     getPaginationRowModel: getPaginationRowModel(),
     state: {
       pagination,
-      sorting
+      sorting,
     },
     onPaginationChange: setPagination,
-    onSortingChange : setSorting,
-    getSortedRowModel : getSortedRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
   });
 
   return (

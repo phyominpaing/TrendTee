@@ -32,6 +32,7 @@ import { Edit, Eye, MoreHorizontal, Trash } from "lucide-react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { useDeleteProductMutation } from "@/store/slices/productApi";
+import TableHeaderWithSortIcon from "./TableHeaderWithSortIcon";
 
 const useProductColumns = (): ColumnDef<Product>[] => {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ const useProductColumns = (): ColumnDef<Product>[] => {
       await deleteProduct(id).unwrap();
 
       toast.success(`Product ${name} deleted successfully.`);
-    } catch (error) {
+    } catch {
       toast.error("Failed to delete product. Please try again.");
     }
   };
@@ -114,11 +115,11 @@ const useProductColumns = (): ColumnDef<Product>[] => {
     },
     {
       accessorKey: "price",
-      header: "Price",
+      header: () => <div className="w-full text-center">Price</div>,
       cell: ({ row }) => {
         const product = row.original;
         return (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-center gap-2">
             <span className="font-medium">$ {product.price.toFixed(2)}</span>
           </div>
         );
@@ -126,11 +127,18 @@ const useProductColumns = (): ColumnDef<Product>[] => {
     },
     {
       accessorKey: "instock_count",
-      header: "Stock",
+      header: ({ column }) => {
+        return (
+          <TableHeaderWithSortIcon
+            text="Stock"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          />
+        );
+      },
       cell: ({ getValue }) => {
         const stock = getValue() as number;
         return (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-center gap-2">
             <Badge
               variant={
                 stock > 10 ? "default" : stock > 0 ? "secondary" : "destructive"
@@ -144,18 +152,25 @@ const useProductColumns = (): ColumnDef<Product>[] => {
     },
     {
       accessorKey: "createdAt",
-      header: "Created At",
+      header: ({ column }) => {
+        return (
+          <TableHeaderWithSortIcon
+            text="Created At"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          />
+        );
+      },
       cell: ({ getValue }) => {
         const date = new Date(getValue() as string);
         return (
           <div className="flex items-center justify-center gap-2">
-            <span className="font-medium text-xs">
-              {/* {date.toLocaleDateString("en-US", {
+            <span className="font-medium">
+              {date.toLocaleDateString("en-US", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
-              })} */}
-              {date.toLocaleDateString()}
+              })}
+              {/* {date.toLocaleDateString()} */}
             </span>
           </div>
         );
