@@ -8,7 +8,7 @@ const Panel = () => {
         {/* Sidebar */}
         <SideBar />
       </div>
-      <div className="col-span-8">
+      <div className="col-span-8 ml-4">
         {/* Dashboard Content */}
         <Outlet />
       </div>

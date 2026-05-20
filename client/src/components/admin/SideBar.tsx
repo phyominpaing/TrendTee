@@ -1,6 +1,6 @@
-import { PackagePlus, Settings } from "lucide-react";
+import { Database, LayoutDashboard, PackagePlus, Settings, User2, UserCog } from "lucide-react";
 import type React from "react";
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 
 interface Page {
   name: string;
@@ -10,28 +10,39 @@ interface Page {
 
 const pages: Page[] = [
   {
+    name: "Dashboard",
+    path: "/admin/dashboard",
+    icon: <LayoutDashboard size={20} />,
+  },
+  {
     name: "Product Management",
     path: "/admin/manage-products",
     icon: <Settings size={20} />,
   },
-  // {
-  //   name: "Create New Product",
-  //   path: "/admin/create-product",
-  //   icon: <PackagePlus size={20} />,
-  // },
+  {
+    name: "User Management",
+    path: "/admin/manage-users",
+    icon: <UserCog size={20} />,
+  },
 ];
 const SideBar = () => {
   return (
-    <div className="flex flex-col gap-4">
-      {pages.map((page, index) => (
-        <div key={index} className="flex items-center gap-2">
-          {page.icon}
-          <Link to={page.path} className="font-medium">
+    <nav className="h-full border-r border-r-slate-200 pr-4">
+      <div className="flex flex-col items-center gap-2">
+        {pages.map((page, index) => (
+          <NavLink
+            key={index}
+            to={page.path}
+            className={({ isActive }) =>
+              `flex items-center gap-2 font-medium rounded-lg p-2 text-sm w-full transistion duration-300 ${isActive ? "bg-primary text-primary-foreground shadow" : "text-muted-foreground hover:bg-muted hover:text-foreground "}`
+            }
+          >
+            {page.icon}
             {page.name}
-          </Link>
-        </div>
-      ))}
-    </div>
+          </NavLink>
+        ))}
+      </div>
+    </nav>
   );
 };
 

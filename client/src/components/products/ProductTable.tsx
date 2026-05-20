@@ -78,15 +78,15 @@ const ProductTable = ({ data }: ProductTableProps) => {
 
   return (
     <div>
-      <div className="flex items-center py-4">
-        <div className="flex items-center py-4">
+      <div className="flex items-center py-5">
+        <div className="flex items-center">
           <Input
             placeholder="Filter products..."
             value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
               table.getColumn("name")?.setFilterValue(event.target.value)
             }
-            className="max-w-sm"
+            className="w-md"
           />
         </div>
 
