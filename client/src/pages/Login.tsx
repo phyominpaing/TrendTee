@@ -29,6 +29,7 @@ import { useLoginMutation } from "@/store/slices/userApi";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "@/store/slices/auth";
+import { apiSlice } from "@/store/slices/api";
 import type { RootState } from "@/store";
 import { useEffect } from "react";
 
@@ -58,13 +59,24 @@ const Login = () => {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
+      dispatch(apiSlice.util.resetApiState());
       const res = await loginMutation(data).unwrap();
       dispatch(setUserInfo(res));
       reset();
       toast.success("Login successful.");
       navigate("/");
-    } catch (error: any) {
-      toast.error(`Login failed. ${error.data.message} . Please try again.`);
+    } catch (error: unknown) {
+      const message =
+        error &&
+        typeof error === "object" &&
+        "data" in error &&
+        error.data &&
+        typeof error.data === "object" &&
+        "message" in error.data
+          ? String(error.data.message)
+          : "Please try again.";
+
+      toast.error(`Login failed. ${message}`);
     }
     reset();
   };

@@ -1,6 +1,6 @@
-import { Database, LayoutDashboard, PackagePlus, Settings, User2, UserCog } from "lucide-react";
+import {  LayoutDashboard,  Settings,  UserCog } from "lucide-react";
 import type React from "react";
-import { Link, NavLink } from "react-router";
+import {  NavLink } from "react-router";
 
 interface Page {
   name: string;

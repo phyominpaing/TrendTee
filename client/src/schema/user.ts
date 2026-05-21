@@ -5,9 +5,9 @@ export const profileUpdateSchema = z
     name: z.string().min(3, "Name must be at least 3 characters"),
     email: z.string().email("Invalid email"),
 
-    oldPassword: z.string().min(6, "Password must be at least 6 characters").optional(),
-    newPassword: z.string().min(6, "Password must be at least 6 characters").optional(),
-    confirmPassword: z.string().min(6, "Password must be at least 6 characters").optional(),
+    oldPassword: z.string().min(6, "Password must be at least 6 characters").optional().or(z.literal("")),
+    newPassword: z.string().min(6, "Password must be at least 6 characters").optional().or(z.literal("")),
+    confirmPassword: z.string().min(6, "Password must be at least 6 characters").optional().or(z.literal("")),
   })
   .refine(
     (data) => {

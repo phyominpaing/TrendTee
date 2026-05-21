@@ -15,7 +15,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import { clearUserInfo } from "@/store/slices/auth";
-import { useLogoutMutation } from "@/store/slices/userApi";
+import { apiSlice } from "@/store/slices/api";
+import { useCurrentUserQuery, useLogoutMutation } from "@/store/slices/userApi";
+import { useEffect } from "react";
 
 interface TopbarProps {
   isCartOpen: boolean;
@@ -27,13 +29,30 @@ const Topbar = ({ isCartOpen, toggleCart }: TopbarProps) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const {
+    data: currentUser,
+    isError,
+    isFetching,
+  } = useCurrentUserQuery(undefined, {
+    skip: !userInfo,
+    refetchOnMountOrArgChange: true,
+  });
+
+  useEffect(() => {
+    if (isError) {
+      dispatch(clearUserInfo());
+      navigate("/");
+    }
+  }, [dispatch, isError, navigate]);
+
   const logoutHandler = async () => {
     try {
       await logoutMutation({}).unwrap();
+      dispatch(apiSlice.util.resetApiState());
       dispatch(clearUserInfo());
       toast.success("Logout successful.");
       navigate("/");
-    } catch (error) {
+    } catch {
       toast.error("Logout failed. Please try again.");
     }
   };
@@ -65,9 +84,11 @@ const Topbar = ({ isCartOpen, toggleCart }: TopbarProps) => {
                   <DropdownMenuItem className=" cursor-pointer">
                     <Link to="/profile">Profile</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className=" cursor-pointer">
-                    Settings
-                  </DropdownMenuItem>
+                  {!isFetching && currentUser?.role === "admin" && (
+                    <DropdownMenuItem className=" cursor-pointer">
+                      <Link to="/admin/dashboard">Dashboard</Link>
+                    </DropdownMenuItem>
+                  )}
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem

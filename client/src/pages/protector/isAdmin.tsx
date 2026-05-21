@@ -9,14 +9,24 @@ const IsAdmin = ({ children }: { children: React.ReactNode }) => {
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
   const navigate = useNavigate();
 
-  const { data: user, isError, isLoading } = useCurrentUserQuery();
+  const {
+    data: user,
+    isError,
+    isLoading,
+    isFetching,
+  } = useCurrentUserQuery(undefined, {
+    skip: !userInfo,
+    refetchOnMountOrArgChange: true,
+  });
 
   useEffect(() => {
-    if (isLoading) return;
+    if (isLoading || isFetching) return;
     if (!userInfo || isError || user?.role !== "admin") {
       navigate("/");
     }
-  }, [userInfo, isError, user, navigate]);
+  }, [userInfo, isError, isLoading, isFetching, user, navigate]);
+  if (isLoading || isFetching) return null;
+  if (!userInfo || isError || user?.role !== "admin") return null;
   return <div>{children}</div>;
 };
 
