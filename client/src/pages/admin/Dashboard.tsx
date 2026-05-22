@@ -1,5 +1,7 @@
 import ProductStatusCard from "@/components/admin/ProductStatusCard";
+import OrderTable from "@/components/products/OrderTable";
 import ProductChart from "@/components/products/ProductChart";
+import RecentProduct from "@/components/products/RecentProduct";
 import { useGetProductsQuery } from "@/store/slices/productApi";
 import type { Product } from "@/types/product";
 import { Package } from "lucide-react";
@@ -48,8 +50,13 @@ const Dashboard = () => {
         />
       </div>
 
-      <div>
+      <div className="mb-4">
         <ProductChart data={products} />
+      </div>
+
+      <div className="flex gap-4 ">
+        <RecentProduct data={products} />
+        <OrderTable/>
       </div>
     </section>
   );
