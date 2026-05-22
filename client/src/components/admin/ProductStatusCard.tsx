@@ -5,12 +5,14 @@ import { Skeleton } from "../ui/skeleton";
 interface ProductStatusCardProps {
   title: string;
   iconColor?: string;
+  icon?: React.ReactNode;
   value: number;
   isLoading: boolean;
 }
 const ProductStatusCard = ({
   title,
   iconColor = "text-muted-foreground",
+  icon = <DatabaseIcon size={16} className={iconColor} />,
   value,
   isLoading,
 }: ProductStatusCardProps) => {
@@ -18,7 +20,7 @@ const ProductStatusCard = ({
     <Card className="p-6">
       <CardHeader className="flex items-center gap-2">
         <CardTitle className="text-sm">{title}</CardTitle>
-        <DatabaseIcon size={16} className={`${iconColor}`} />
+        {icon}
       </CardHeader>
       <CardContent>
         <div className="text-2xl font-semibold">

@@ -1,6 +1,6 @@
-import {  LayoutDashboard,  Settings,  UserCog } from "lucide-react";
+import { ChartLine, Settings, UserCog } from "lucide-react";
 import type React from "react";
-import {  NavLink } from "react-router";
+import { NavLink } from "react-router";
 
 interface Page {
   name: string;
@@ -12,7 +12,7 @@ const pages: Page[] = [
   {
     name: "Dashboard",
     path: "/admin/dashboard",
-    icon: <LayoutDashboard size={20} />,
+    icon: <ChartLine size={20} />,
   },
   {
     name: "Product Management",
