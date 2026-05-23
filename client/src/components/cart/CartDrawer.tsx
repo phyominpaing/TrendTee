@@ -1,100 +1,18 @@
 import { X } from "lucide-react";
 import CartItems from "./CartItems";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "@/store";
+import { Button } from "../ui/button";
+import { clearCart } from "@/store/slices/cart";
 
 interface CartDrawerProps {
   isCartOpen: boolean;
   toggleCart: () => void;
 }
 
-const products = [
-  {
-    id: 1,
-    name: "Black T-shirt",
-    price: 200,
-    category: "T-shirts",
-    size: ["S", "M", "L", "XL"],
-    colors: ["Red", "Black"],
-    rating: 4,
-    images: [
-      {
-        url: "https://iili.io/FCGxQTv.png",
-      },
-      {
-        url: "https://iili.io/FCGxQTv.png",
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: "Black Hoodie",
-    price: 300,
-    category: "Hoodies",
-    size: ["S", "M", "L", "XL"],
-    colors: ["Red", "Black"],
-    rating: 5,
-    images: [
-      {
-        url: "https://iili.io/FCGxQTv.png",
-      },
-      {
-        url: "https://iili.io/FCGxQTv.png",
-      },
-    ],
-  },
-  {
-    id: 3,
-    name: "Taiwan Jeans",
-    price: 200,
-    category: "Jeans",
-    size: ["S", "M", "L", "XL"],
-    colors: ["Red", "Black"],
-    rating: 3,
-    images: [
-      {
-        url: "https://iili.io/FCGxQTv.png",
-      },
-      {
-        url: "https://iili.io/FCGxQTv.png",
-      },
-    ],
-  },
-  {
-    id: 4,
-    name: "Shorts",
-    price: 100,
-    category: "Shorts",
-    size: ["S", "M", "L", "XL"],
-    colors: ["Red", "Black"],
-    rating: 4,
-    images: [
-      {
-        url: "https://iili.io/FCGxQTv.png",
-      },
-      {
-        url: "https://iili.io/FCGxQTv.png",
-      },
-    ],
-  },
-  {
-    id: 5,
-    name: "Black Shirt",
-    price: 150,
-    category: "Shirt",
-    size: ["S", "M", "L", "XL"],
-    colors: ["Red", "Black"],
-    rating: 5,
-    images: [
-      {
-        url: "https://iili.io/FCGxQTv.png",
-      },
-      {
-        url: "https://iili.io/FCGxQTv.png0",
-      },
-    ],
-  },
-];
-
 const CartDrawer = ({ isCartOpen, toggleCart }: CartDrawerProps) => {
+  const dispatch = useDispatch();
+  const products = useSelector((state: RootState) => state.cart.items);
   return (
     <div
       className={`bg-white fixed top-0 right-0 w-1/4 h-full transform transition-transform duration-300 z-50 p-4 flex flex-col border-l-2  border-l-gray-200 ${
@@ -105,23 +23,44 @@ const CartDrawer = ({ isCartOpen, toggleCart }: CartDrawerProps) => {
         <X size={24} onClick={toggleCart} />
       </div>
 
-      <h2 className="text-xl font-semibold my-4 uppercase">Your Cart</h2>
+      <div className="my-4 flex justify-between items-center">
+        <h2 className="text-xl font-semibold  uppercase">Your Cart</h2>
+        {products.length > 0 && (
+          <Button
+            onClick={() => dispatch(clearCart())}
+            className="text-xs "
+            variant={"destructive"}
+          >
+            Clear All{" "}
+          </Button>
+        )}
+      </div>
 
       <div className="space-y-4 flex-1  overflow-y-auto  scrollbar-hide">
         {products.map((product) => (
           <CartItems
-            key={product.id}
+            key={product.key}
+            productKey={product.key!}
             name={product.name}
-            size={product.size[0]}
-            color={product.colors[0]}
-            image={product.images[0].url}
-            price={product.price}
+            size={product.size}
+            color={product.color}
+            image={product.image}
+            price={Number(product.price)}
+            quantity={product.quantity}
           />
         ))}
+        {products.length === 0 && (
+          <div className="flex flex-col justify-center items-center h-full">
+            <span className="text-gray-500 text-lg">Your cart is empty</span>
+          </div>
+        )}
       </div>
-      <button className="bg-black w-full py-4 text-white rounded-md">
-        Go to Checkout
-      </button>
+
+      {products.length > 0 && (
+        <button className="bg-black w-full py-4 text-white rounded-md">
+          Go to Checkout
+        </button>
+      )}
     </div>
   );
 };

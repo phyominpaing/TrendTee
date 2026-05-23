@@ -26,6 +26,9 @@ interface TopbarProps {
 const Topbar = ({ isCartOpen, toggleCart }: TopbarProps) => {
   const [logoutMutation, { isLoading }] = useLogoutMutation();
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
+  const productsInCart = useSelector(
+    (state: RootState) => state.cart.items.length,
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -65,7 +68,14 @@ const Topbar = ({ isCartOpen, toggleCart }: TopbarProps) => {
         </Link>
         <SearchBox />
         <div className="flex items-center gap-4 cursor-pointer">
-          <ShoppingCart onClick={toggleCart} size={24} />
+          <div className="relative">
+            <ShoppingCart onClick={toggleCart} size={24} />
+            {productsInCart > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                {productsInCart}
+              </span>
+            )}
+          </div>
           {userInfo ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

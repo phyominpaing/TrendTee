@@ -1,4 +1,6 @@
+import { decreaseQuantity, increaseQuantity, removeFromCart } from "@/store/slices/cart";
 import { Minus, Plus, Trash2 } from "lucide-react";
+import { useDispatch } from "react-redux";
 
 interface CartItemsProps {
   name: string;
@@ -6,8 +8,19 @@ interface CartItemsProps {
   color: string;
   image: string;
   price: number;
+  quantity: number;
+  productKey: string;
 }
-const CartItems = ({ name, size, color, image, price }: CartItemsProps) => {
+const CartItems = ({
+  name,
+  size,
+  color,
+  image,
+  price,
+  quantity,
+  productKey,
+}: CartItemsProps) => {
+  const dispatch = useDispatch();
   return (
     <div className="flex justify-between border-b border-b-gray-300 pb-4">
       <div className="flex items-center gap-2">
@@ -25,13 +38,19 @@ const CartItems = ({ name, size, color, image, price }: CartItemsProps) => {
       </div>
 
       <div className="flex flex-col justify-between items-end ">
-        <Trash2 className="w-6 h-6 text-red-600" />
+        <Trash2 onClick={() => dispatch(removeFromCart(productKey))} className="w-6 h-6 text-red-600 cursor-pointer" />
         <div className=" flex items-center gap-3">
-          <button className="bg-black p-2 rounded-full text-white">
+          <button
+            onClick={() => dispatch(increaseQuantity(productKey))}
+            className="bg-black p-2 rounded-full text-white"
+          >
             <Plus size={14} />
           </button>
-          <span className="font-medium">1</span>
-          <button className="bg-black p-2 rounded-full text-white">
+          <span className="font-medium">{quantity}</span>
+          <button
+            onClick={() => dispatch(decreaseQuantity(productKey))}
+            className="bg-black p-2 rounded-full text-white"
+          >
             <Minus size={14} />
           </button>
         </div>

@@ -4,13 +4,17 @@ import RatingConverter from "../common/RatingConverter";
 import { Minus, Plus } from "lucide-react";
 import { useGetProductDetailsQuery } from "@/store/slices/productApi";
 import type { ProductImage } from "@/types/product";
+import { addToCart } from "@/store/slices/cart";
+import { useDispatch } from "react-redux";
+import { toast } from "sonner";
 
 const ProductDetails = () => {
   const [selectedImage, setSelectedImage] = useState<string>();
   const [selectedColor, setSelectedColor] = useState<string>();
-  const [selectedSize, setSelectedSize] = useState<string>(); 
+  const [selectedSize, setSelectedSize] = useState<string>();
   const [quantity, setQuantity] = useState<number>(1);
   const { id } = useParams();
+  const dispatch = useDispatch();
 
   const { data: product, isLoading } = useGetProductDetailsQuery(id as string);
 
@@ -23,6 +27,21 @@ const ProductDetails = () => {
       if (product.sizes.length > 0) setSelectedSize(product.sizes[0]);
     }
   }, [product]);
+
+  const addToCartHandler = () => {
+    toast.success("Product added to cart");
+    dispatch(
+      addToCart({
+        productId: product?._id,
+        name: product?.name,
+        image: selectedImage || "",
+        color: selectedColor || "",
+        size: selectedSize || "",
+        price: product?.price || 0,
+        quantity,
+      }),
+    );
+  };
 
   const handleImageClick = (image: string) => {
     setSelectedImage(image);
@@ -73,9 +92,11 @@ const ProductDetails = () => {
         <h2 className="text-3xl font-medium mb-2">{product.name}</h2>
         <RatingConverter count={product.rating_count} />
         <p className="text-xl font-semibold my-4">${product.price}</p>
-        <div className="text-sm font-medium text-gray-400" dangerouslySetInnerHTML={{__html : product.description}}/>
+        <div
+          className="text-sm font-medium text-gray-400"
+          dangerouslySetInnerHTML={{ __html: product.description }}
+        />
 
-       
         <hr className="mt-4 text-gray-300" />
 
         <h2 className="text-lg font-semibold my-2 text-slate-600">Colors</h2>
@@ -129,7 +150,10 @@ const ProductDetails = () => {
               <Plus size={18} />
             </button>
           </div>
-          <button className="bg-black p-2 rounded-md text-white w-full text-center text-sm cursor-pointer">
+          <button
+            onClick={addToCartHandler}
+            className="bg-black p-2 rounded-md text-white w-full text-center text-sm cursor-pointer"
+          >
             Add to Cart
           </button>
         </div>
