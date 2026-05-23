@@ -6,8 +6,8 @@ interface RatingConverterProps {
 const RatingConverter = ({ count }: RatingConverterProps) => {
   return (
     <div className="flex items-center gap-1 mb-2">
-      {Array.from({ length: count }).map((_, index) => (
-        <Star key={index} size={18}  className=" fill-yellow-400 text-yellow-400"/>
+      {Array.from({ length: count > 5 ? 5 : count }).map((_, index) => (
+        <Star key={index} size={12}  className=" fill-yellow-400 text-yellow-400"/>
       ))} 
     </div>
   );
