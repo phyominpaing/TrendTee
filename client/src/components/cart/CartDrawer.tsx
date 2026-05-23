@@ -28,7 +28,7 @@ const CartDrawer = ({ isCartOpen, toggleCart }: CartDrawerProps) => {
         {products.length > 0 && (
           <Button
             onClick={() => dispatch(clearCart())}
-            className="text-xs "
+            className="text-xs cursor-pointer"
             variant={"destructive"}
           >
             Clear All{" "}
