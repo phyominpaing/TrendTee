@@ -11,7 +11,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 // @route GET - api/create-order
 // @desc Add new order and request stripe section
 // @access Private/User
-const createOrderAndCheckOutSession = asyncHandler(
+export const createOrderAndCheckOutSession = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     const { items, bill } = req.body;
     const customerId = req.user?._id;
