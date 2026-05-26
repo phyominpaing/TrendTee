@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/store";
 import { Button } from "../ui/button";
 import { clearCart } from "@/store/slices/cart";
+import { useCreateCheckOutSessionMutation } from "@/store/slices/orderApi";
 
 interface CartDrawerProps {
   isCartOpen: boolean;
@@ -11,8 +12,31 @@ interface CartDrawerProps {
 }
 
 const CartDrawer = ({ isCartOpen, toggleCart }: CartDrawerProps) => {
-  const dispatch = useDispatch();
   const products = useSelector((state: RootState) => state.cart.items);
+  const dispatch = useDispatch();
+  const productInCart = useSelector(
+    (state: RootState) => state.cart.items.length,
+  );
+
+  const [createCheckOutSession, { isLoading }] =
+    useCreateCheckOutSessionMutation();
+
+  const bill = products.reduce(
+    (acc, item) => acc + Number(item.price) * item.quantity,
+    0,
+  );
+
+  const checkoutHandler = async () => {
+    try {
+      const {url} = await createCheckOutSession({
+        items: products,
+        bill: bill,
+      }).unwrap();
+
+      window.location.href = url;
+
+    } catch (error) {}
+  };
   return (
     <div
       className={`bg-white fixed top-0 right-0 w-1/4 h-full transform transition-transform duration-300 z-50 p-4 flex flex-col border-l-2  border-l-gray-200 ${
@@ -25,7 +49,7 @@ const CartDrawer = ({ isCartOpen, toggleCart }: CartDrawerProps) => {
 
       <div className="my-4 flex justify-between items-center">
         <h2 className="text-xl font-semibold  uppercase">Your Cart</h2>
-        {products.length > 0 && (
+        {productInCart > 0 && (
           <Button
             onClick={() => dispatch(clearCart())}
             className="text-xs cursor-pointer"
@@ -57,7 +81,11 @@ const CartDrawer = ({ isCartOpen, toggleCart }: CartDrawerProps) => {
       </div>
 
       {products.length > 0 && (
-        <button className="bg-black w-full py-4 text-white rounded-md">
+        <button
+          onClick={checkoutHandler}
+          disabled={isLoading}
+          className="bg-black w-full py-4 text-white rounded-md cursor-pointer"
+        >
           Go to Checkout
         </button>
       )}

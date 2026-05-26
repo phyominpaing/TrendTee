@@ -21,12 +21,13 @@ export const createOrderAndCheckOutSession = asyncHandler(
         currency: "usd",
         product_data: {
           name: item.name,
-          metaData: {
+          metadata: {
             productId: item.productId,
             color: item.color,
             size: item.size,
           },
         },
+        unit_amount: Math.round(item.price * 100), // Convert to cents
       },
       quantity: item.quantity,
     }));
@@ -39,7 +40,6 @@ export const createOrderAndCheckOutSession = asyncHandler(
       cancel_url: `${process.env.CLIENT_URL}/order-cancelled`,
       metadata: {
         customerId: customerId?.toString()!,
-        cart: JSON.stringify(items),
         bill: bill.toString(),
       },
     });
