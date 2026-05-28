@@ -45,5 +45,20 @@ export const createOrderAndCheckOutSession = asyncHandler(
     });
 
     res.status(200).json({ url: session.url });
+  },  
+);
+
+export const confirmSessionId = asyncHandler(
+  async (req: Request, res: Response) => {
+    const sessionId = req.params.session_id as string;
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+    if (!session || session.payment_status !== "paid") {
+      res
+        .status(403)
+        .json({ message: "Payment not successful or session not found" });
+    }
+
+    
   },
 );
