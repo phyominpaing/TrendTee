@@ -26,7 +26,7 @@ app.use(
 app.use(json({ limit: "10mb" }));
 app.use(cookieParser());
 
-const endpointSecret = "whsec_...";
+const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 app.post(
   "/stripe/webhook",
   express.raw({ type: "application/json" }),
@@ -82,4 +82,9 @@ app.listen(PORT, () => {
   console.log("Server is running :", PORT);
 });
 
-// http://localhost:4000/
+
+// stripe listen --forward-to localhost:4000/stripe/webhook
+
+// whsec_bf9fecada321660fa2ffd3cb8121943d5d805ee91192bb0e400253752a18fb92
+
+// stripe trigger checkout.session.completed

@@ -45,7 +45,7 @@ export const createOrderAndCheckOutSession = asyncHandler(
     });
 
     res.status(200).json({ url: session.url });
-  },  
+  },
 );
 
 export const confirmSessionId = asyncHandler(
@@ -58,7 +58,5 @@ export const confirmSessionId = asyncHandler(
         .status(403)
         .json({ message: "Payment not successful or session not found" });
     }
-
-    
   },
 );
