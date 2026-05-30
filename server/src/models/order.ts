@@ -21,7 +21,7 @@ export interface OrderDocument extends Document {
   updatedAt: Date;
 }
 
-const orderItemSchema = new Schema<OrderItem>(
+export const orderItemSchema = new Schema<OrderItem>(
   {
     productId: { type: Schema.Types.ObjectId, ref: "Product", required: true },
     name: { type: String, required: true },

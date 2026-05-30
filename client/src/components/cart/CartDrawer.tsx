@@ -35,7 +35,9 @@ const CartDrawer = ({ isCartOpen, toggleCart }: CartDrawerProps) => {
 
       window.location.href = url;
 
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div
