@@ -4,6 +4,7 @@ import type { AuthRequest } from "../middlewares/authMiddleware.ts";
 import Stripe from "stripe";
 import type { OrderItem } from "../models/order.ts";
 import TempCart from "../models/tempCart.ts";
+import Order from "../models/order.ts";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2026-04-22.dahlia",
@@ -56,15 +57,26 @@ export const createOrderAndCheckOutSession = asyncHandler(
   },
 );
 
+// @route GET - api/confirm-order/:session_id
+// @desc Confirm order by session id and return order details
+// @access Private/User
 export const confirmSessionId = asyncHandler(
   async (req: Request, res: Response) => {
     const sessionId = req.params.session_id as string;
     const session = await stripe.checkout.sessions.retrieve(sessionId);
 
     if (!session || session.payment_status !== "paid") {
-      res
-        .status(403)
-        .json({ message: "Payment not successful or session not found" });
+      res.status(403);
+      throw new Error("Payment not completed or session not found");
     }
+
+    const order = await Order.findOne({ stripeSessionId: sessionId });
+
+    if (!order) {
+      res.status(404);
+      throw new Error("Order not found");
+    }
+
+    res.status(200).json(order);
   },
 );

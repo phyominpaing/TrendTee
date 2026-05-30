@@ -23,6 +23,7 @@ import ProductManagement from "./pages/admin/ProductManagement.tsx";
 import Dashboard from "./pages/admin/Dashboard.tsx";
 import UserManagement from "./pages/admin/UserManagement.tsx";
 import { PersistGate } from "redux-persist/integration/react";
+import ConfirmOrder from "./pages/order/ConfirmOrder.tsx";
 
 const router = createBrowserRouter([
   {
@@ -83,6 +84,10 @@ const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path : "/order-success",
+        element : <ConfirmOrder />
+      }
     ],
   },
   {

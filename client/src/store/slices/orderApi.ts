@@ -1,6 +1,6 @@
 // /create-order
 
-import type { OrderItem } from "@/types/order";
+import type { Order, OrderItem } from "@/types/order";
 import { apiSlice } from "./api";
 
 export const orderApiSlice = apiSlice.injectEndpoints({
@@ -16,8 +16,14 @@ export const orderApiSlice = apiSlice.injectEndpoints({
         credentials: "include",
       }),
     }),
+    confirmSession: builder.query<Order, string>({
+      query: (session_id) => ({
+        url: `/confirm-order/${session_id}`,
+        method: "GET",
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
-
-export const { useCreateCheckOutSessionMutation } = orderApiSlice;
+export const { useCreateCheckOutSessionMutation , useConfirmSessionQuery } = orderApiSlice;
