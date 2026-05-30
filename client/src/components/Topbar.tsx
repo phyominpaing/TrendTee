@@ -42,11 +42,11 @@ const Topbar = ({ isCartOpen, toggleCart }: TopbarProps) => {
   });
 
   useEffect(() => {
-    if (isError) {
+    if (isError || !userInfo) {
       dispatch(clearUserInfo());
       navigate("/");
     }
-  }, [dispatch, isError, navigate]);
+  }, [dispatch, isError, navigate , userInfo]);
 
   const logoutHandler = async () => {
     try {

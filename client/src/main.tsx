@@ -24,6 +24,7 @@ import Dashboard from "./pages/admin/Dashboard.tsx";
 import UserManagement from "./pages/admin/UserManagement.tsx";
 import { PersistGate } from "redux-persist/integration/react";
 import ConfirmOrder from "./pages/order/ConfirmOrder.tsx";
+import Cancelled from "./pages/order/Cancelled.tsx";
 
 const router = createBrowserRouter([
   {
@@ -85,9 +86,13 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path : "/order-success",
-        element : <ConfirmOrder />
-      }
+        path: "/order-success",
+        element: <ConfirmOrder />,
+      },
+      {
+        path: "/order-cancelled",
+        element: <Cancelled />,
+      },
     ],
   },
   {

@@ -1,13 +1,16 @@
 import { Button } from "@/components/ui/button";
+import { clearCart } from "@/store/slices/cart";
 import { useConfirmSessionQuery } from "@/store/slices/orderApi";
 import { CircleCheck } from "lucide-react";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate, useSearchParams } from "react-router";
 
 const ConfirmOrder = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const sessionId = searchParams.get("session_id");
+  const dispatch = useDispatch();
 
   const { data, isLoading, isError } = useConfirmSessionQuery(sessionId!);
     console.log(data);
@@ -15,6 +18,8 @@ const ConfirmOrder = () => {
   useEffect(() => {
     if (!sessionId || isError) {
       navigate("/");
+    } else {
+        dispatch(clearCart());
     }
   }, [sessionId, isError]);
 
