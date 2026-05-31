@@ -1,4 +1,4 @@
-import { FAKE_ORDERS } from "@/lib/fakeOrder";
+import { useGetAllOrdersQuery } from "@/store/slices/orderApi";
 import {
   Card,
   CardContent,
@@ -8,6 +8,7 @@ import {
 } from "../ui/card";
 
 const OrderTable = () => {
+  const { data } = useGetAllOrdersQuery(undefined);
   return (
     <div className="flex-2">
       <Card className="py-4">
@@ -22,17 +23,15 @@ const OrderTable = () => {
           <table className="text-sm w-full">
             <thead>
               <tr className="bg-muted/50">
-                <th className="p-2">Order ID</th>
-                <th className="p-2">Customer</th>
+                <th className="p-2">Customer Email</th>
                 <th className="p-2">Date</th>
                 <th className="p-2">Amount</th>
                 <th className="p-2">Status</th>
               </tr>
             </thead>
             <tbody className=" divide-y">
-              {FAKE_ORDERS.map((order) => (
+              {data?.map((order) => (
                 <tr key={order._id} className="hover:bg-muted/50 ">
-                  <td className="p-2 text-center">{order._id}</td>
                   <td className="p-2 text-center">{order.customer}</td>
                   <td className="p-2 text-center">
                     {new Date(order.createdAt).toLocaleDateString()}
