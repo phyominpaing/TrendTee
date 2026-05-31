@@ -1,4 +1,4 @@
-import { ChartLine, Settings, UserCog } from "lucide-react";
+import { ChartLine, ListOrdered, Settings, UserCog } from "lucide-react";
 import type React from "react";
 import { NavLink } from "react-router";
 
@@ -18,6 +18,11 @@ const pages: Page[] = [
     name: "Product Management",
     path: "/admin/manage-products",
     icon: <Settings size={20} />,
+  },
+  {
+    name: "Order Management",
+    path: "/admin/manage-orders",
+    icon: <ListOrdered size={20} />,
   },
   {
     name: "User Management",

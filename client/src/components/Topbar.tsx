@@ -46,7 +46,7 @@ const Topbar = ({ isCartOpen, toggleCart }: TopbarProps) => {
       dispatch(clearUserInfo());
       navigate("/");
     }
-  }, [dispatch, isError, navigate , userInfo]);
+  }, [dispatch, isError, navigate, userInfo]);
 
   const logoutHandler = async () => {
     try {
@@ -99,6 +99,9 @@ const Topbar = ({ isCartOpen, toggleCart }: TopbarProps) => {
                       <Link to="/admin/dashboard">Dashboard</Link>
                     </DropdownMenuItem>
                   )}
+                  <DropdownMenuItem className=" cursor-pointer">
+                    <Link to="/orders">Orders</Link>
+                  </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem

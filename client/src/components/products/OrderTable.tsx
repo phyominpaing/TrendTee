@@ -31,8 +31,8 @@ const OrderTable = () => {
             </thead>
             <tbody className=" divide-y">
               {FAKE_ORDERS.map((order) => (
-                <tr key={order.id} className="hover:bg-muted/50 ">
-                  <td className="p-2 text-center">{order.id}</td>
+                <tr key={order._id} className="hover:bg-muted/50 ">
+                  <td className="p-2 text-center">{order._id}</td>
                   <td className="p-2 text-center">{order.customer}</td>
                   <td className="p-2 text-center">
                     {new Date(order.createdAt).toLocaleDateString()}

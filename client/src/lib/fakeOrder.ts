@@ -3,7 +3,7 @@ import type { Order } from "../types/order";
 
 export const FAKE_ORDERS: Order[] = [
   {
-    id: "1",
+    _id: "1",
     userId: "user-a",
     items: [
       {
@@ -21,7 +21,7 @@ export const FAKE_ORDERS: Order[] = [
     customer: "Alice Smith",
   },
   {
-    id: "2",
+    _id: "2",
     userId: "user-b",
     items: [
       {
@@ -39,7 +39,7 @@ export const FAKE_ORDERS: Order[] = [
     customer: "Bob Lee",
   },
   {
-    id: "3",
+    _id: "3",
     userId: "user-c",
     items: [
       {
@@ -57,7 +57,7 @@ export const FAKE_ORDERS: Order[] = [
     customer: "Charlie Brown",
   },
   {
-    id: "4",
+    _id: "4",
     userId: "user-d",
     items: [
       {
