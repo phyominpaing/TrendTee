@@ -23,7 +23,38 @@ export const orderApiSlice = apiSlice.injectEndpoints({
         credentials: "include",
       }),
     }),
+    getOrdersByUserId: builder.query<Order[], undefined>({
+      query: () => ({
+        url: "/orders",
+        method: "GET",
+        credentials: "include",
+      }),
+      providesTags: ["Order"],
+    }),
+    getAllOrders: builder.query<Order[], undefined>({
+      query: () => ({
+        url: "/orders/all",
+        method: "GET",
+        credentials: "include",
+      }),
+      providesTags: ["Order"],
+    }),
+    changeOrderStatus: builder.mutation({
+      query: ({ orderId, status }) => ({
+        url: `/order/${orderId}`,
+        method: "PATCH",
+        body: { status },
+        credentials: "include",
+      }),
+      invalidatesTags: ["Order"],
+    }),
   }),
 });
 
-export const { useCreateCheckOutSessionMutation , useConfirmSessionQuery } = orderApiSlice;
+export const {
+  useCreateCheckOutSessionMutation,
+  useConfirmSessionQuery,
+  useGetOrdersByUserIdQuery,
+  useGetAllOrdersQuery,
+  useChangeOrderStatusMutation,
+} = orderApiSlice;

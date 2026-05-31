@@ -33,3 +33,13 @@ export const orderCreateValidator = [
 export const confirmSessionIdValidator = [
   param("session_id").notEmpty().withMessage("Valid session id is required"),
 ];
+
+export const orderIdValidator = [
+  param("orderId").isMongoId().withMessage("Valid order id is required"),
+];
+
+export const orderStatusValidator = [
+  body("status")
+    .isIn(["pending", "paid", "shipped", "delivered", "cancelled"])
+    .withMessage("Status is required"),
+];
