@@ -9,12 +9,9 @@ const ProductCreate = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data: ProductFormInputs) => {
-    console.log(data);
     
     try {
       const response = await createProduct(data).unwrap();
-      console.log(response);
-      console.log(data);
 
       toast.success("Product created successfully.");
       navigate("/admin/manage-products");

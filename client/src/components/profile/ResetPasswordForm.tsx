@@ -20,7 +20,6 @@ const ResetPasswordForm = ({ email, className = "" }: ResetPasswordProps) => {
       toast.success(res?.message);
     } catch (error: any) {
       toast.error(error?.data?.message);
-      console.log(error);
     }
   };
   return (

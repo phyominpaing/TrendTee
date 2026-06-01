@@ -65,7 +65,6 @@ const ResetPassword = () => {
       navigate("/login");
     } catch (error: any) {
       toast.error(`Login failed. ${error.data?.message} . Please try again.`);
-      console.log(error);
     }
     reset();
   };

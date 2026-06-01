@@ -23,7 +23,7 @@ const OrderTable = () => {
           <table className="text-sm w-full">
             <thead>
               <tr className="bg-muted/50">
-                <th className="p-2">Customer Email</th>
+                <th className="p-2 text-left">Customer Email</th>
                 <th className="p-2">Date</th>
                 <th className="p-2">Amount</th>
                 <th className="p-2">Status</th>
@@ -32,7 +32,7 @@ const OrderTable = () => {
             <tbody className=" divide-y">
               {data?.map((order) => (
                 <tr key={order._id} className="hover:bg-muted/50 ">
-                  <td className="p-2 text-center">{order.customer}</td>
+                  <td className="p-2 text-left">{order.customer}</td>
                   <td className="p-2 text-center">
                     {new Date(order.createdAt).toLocaleDateString()}
                   </td>

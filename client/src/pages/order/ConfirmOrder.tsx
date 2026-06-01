@@ -13,7 +13,6 @@ const ConfirmOrder = () => {
   const dispatch = useDispatch();
 
   const { data, isLoading, isError } = useConfirmSessionQuery(sessionId!);
-    console.log(data);
     
   useEffect(() => {
     if (!sessionId || isError) {

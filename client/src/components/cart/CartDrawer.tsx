@@ -5,6 +5,7 @@ import type { RootState } from "@/store";
 import { Button } from "../ui/button";
 import { clearCart } from "@/store/slices/cart";
 import { useCreateCheckOutSessionMutation } from "@/store/slices/orderApi";
+import { toast } from "sonner";
 
 interface CartDrawerProps {
   isCartOpen: boolean;
@@ -36,7 +37,7 @@ const CartDrawer = ({ isCartOpen, toggleCart }: CartDrawerProps) => {
       window.location.href = url;
 
     } catch (error) {
-      console.log(error);
+      toast.error("Failed to create checkout session. Please try again.");
     }
   };
   return (

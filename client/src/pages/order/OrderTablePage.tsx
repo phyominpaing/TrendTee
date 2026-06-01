@@ -20,7 +20,6 @@ import { useGetOrdersByUserIdQuery } from "@/store/slices/orderApi";
 
 const OrderTablePage = () => {
   const { data, isLoading } = useGetOrdersByUserIdQuery(undefined);
-  console.log(data);
 
   if (isLoading) {
     return <div>Loading...</div>;

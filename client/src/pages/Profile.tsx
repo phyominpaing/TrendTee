@@ -75,7 +75,6 @@ const Profile = () => {
       setAvatar(null);
       refetch();
     } catch (error) {
-      console.log(error);
       toast.error("Failed to upload profile image. Please try again.");
     }
   };

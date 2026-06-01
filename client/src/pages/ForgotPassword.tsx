@@ -46,7 +46,6 @@ const ForgotPassword = () => {
   } = form;
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log(data.email);
 
     try {
       const res = await forgotPasswordMutation({
