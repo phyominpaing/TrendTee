@@ -2,15 +2,15 @@ import express, { json, type Request, type Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { connectDB } from "./db/dbConnect.ts";
+import { connectDB } from "./db/dbConnect.js";
 
-import userRoutes from "./routes/user.ts";
-import productRoutes from "./routes/product.ts";
-import orderRoutes from "./routes/order.ts";
-import errorHandler from "./middlewares/errorHandler.ts";
+import userRoutes from "./routes/user.js";
+import productRoutes from "./routes/product.js";
+import orderRoutes from "./routes/order.js";
+import errorHandler from "./middlewares/errorHandler.js";
 import stripe from "stripe";
-import Order from "./models/order.ts";
-import TempCart from "./models/tempCart.ts";
+import Order from "./models/order.js";
+import TempCart from "./models/tempCart.js";
 
 dotenv.config({
   path: ".env",

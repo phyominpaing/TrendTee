@@ -8,15 +8,15 @@ import {
   getProductsMeta,
   getProductsWithFilters,
   updateProduct,
-} from "../controllers/product.ts";
-import { isAdmin, protect } from "../middlewares/authMiddleware.ts";
+} from "../controllers/product.js";
+import { isAdmin, protect } from "../middlewares/authMiddleware.js";
 import {
   createProductValidator,
   deleteProductValidator,
   updateProductValidator,
-} from "../validators/product.ts";
-import { validateRequest } from "../middlewares/validateRequest.ts";
-import { upload } from "../utils/upload.ts";
+} from "../validators/product.js";
+import { validateRequest } from "../middlewares/validateRequest.js";
+import { upload } from "../utils/upload.js";
 
 const router = Router();
 

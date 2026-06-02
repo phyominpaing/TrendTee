@@ -9,8 +9,8 @@ import {
   updatePassword,
   updateUserProfile,
   uploadAvatar,
-} from "../controllers/user.ts";
-import { protect } from "../middlewares/authMiddleware.ts";
+} from "../controllers/user.js";
+import { protect } from "../middlewares/authMiddleware.js";
 import {
   loginValidator,
   passwordChangeValidator,
@@ -19,8 +19,8 @@ import {
   updatePasswordValidator,
   uploadImageValidator,
   userInfoUpdateValidator,
-} from "../validators/user.ts";
-import { validateRequest } from "../middlewares/validateRequest.ts";
+} from "../validators/user.js";
+import { validateRequest } from "../middlewares/validateRequest.js";
 
 const router = Router();
 

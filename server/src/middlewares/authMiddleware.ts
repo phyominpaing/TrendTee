@@ -1,7 +1,7 @@
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import type { NextFunction, Request, Response } from "express";
-import asyncHandler from "../utils/asyncHandler.ts";
-import { User } from "../models/user.ts";
+import asyncHandler from "../utils/asyncHandler.js";
+import { User } from "../models/user.js";
 import  { Types } from "mongoose";
 
 interface User {

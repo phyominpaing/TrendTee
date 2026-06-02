@@ -1,10 +1,10 @@
 import type { Request, Response } from "express";
-import asyncHandler from "../utils/asyncHandler.ts";
-import type { AuthRequest } from "../middlewares/authMiddleware.ts";
+import asyncHandler from "../utils/asyncHandler.js";
+import type { AuthRequest } from "../middlewares/authMiddleware.js";
 import Stripe from "stripe";
-import type { OrderItem } from "../models/order.ts";
-import TempCart from "../models/tempCart.ts";
-import Order from "../models/order.ts";
+import type { OrderItem } from "../models/order.js";
+import TempCart from "../models/tempCart.js";
+import Order from "../models/order.js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2026-04-22.dahlia",

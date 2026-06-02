@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --exec ts-node-esm src/app.ts",
     "db:seed": "ts-node src/db/seeder.ts",
-    "build" : "tsc",
-    "start": "node dist/app.d.ts"
+    "build": "tsc",
+    "start": "node dist/app.js"
   },
   "keywords": [],
   "author": "",
@@ -37,6 +37,7 @@
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^2.1.0",
-    "@types/nodemailer": "^8.0.0"
+    "@types/nodemailer": "^8.0.0",
+    "typescript": "^6.0.3"
   }
 }

@@ -1,5 +1,5 @@
 import mongoose, { Schema, Types } from "mongoose";
-import { orderItemSchema } from "./order.ts";
+import { orderItemSchema } from "./order.js";
 
 const tempCartSchema = new Schema({
   userId: { type: Types.ObjectId, ref: "User", required: true },

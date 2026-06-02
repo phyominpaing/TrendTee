@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { Product } from "../models/product.ts";
-import { products } from "./data.ts";
+import { Product } from "../models/product.js";
+import { products } from "./data.js";
 
 
 async function seed() {

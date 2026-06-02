@@ -1,13 +1,13 @@
 import type { Request, Response } from "express";
-import { User } from "../models/user.ts";
-import asyncHandler from "../utils/asyncHandler.ts";
-import generateToken from "../utils/generateToken.ts";
-import type { AuthRequest } from "../middlewares/authMiddleware.ts";
-import { deleteImage, uploadSingleImage } from "../utils/cloudinary.ts";
+import { User } from "../models/user.js";
+import asyncHandler from "../utils/asyncHandler.js";
+import generateToken from "../utils/generateToken.js";
+import type { AuthRequest } from "../middlewares/authMiddleware.js";
+import { deleteImage, uploadSingleImage } from "../utils/cloudinary.js";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
-import { forgetPasswordEmailTemplate } from "../utils/emailTemplate.ts";
-import { sendEmail } from "../utils/sendEmail.ts";
+import { forgetPasswordEmailTemplate } from "../utils/emailTemplate.js";
+import { sendEmail } from "../utils/sendEmail.js";
 
 // @route POST - api/register
 // @desc Register a new user

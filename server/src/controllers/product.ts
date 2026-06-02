@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
-import asyncHandler from "../utils/asyncHandler.ts";
-import { Product } from "../models/product.ts";
-import type { AuthRequest } from "../middlewares/authMiddleware.ts";
-import { deleteImage, uploadSingleImage } from "../utils/cloudinary.ts";
+import asyncHandler from "../utils/asyncHandler.js";
+import { Product } from "../models/product.js";
+import type { AuthRequest } from "../middlewares/authMiddleware.js";
+import { deleteImage, uploadSingleImage } from "../utils/cloudinary.js";
 
 type ProductImageInput = {
   file?: string;

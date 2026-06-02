@@ -1,19 +1,19 @@
 import { Router } from "express";
-import { isAdmin, protect } from "../middlewares/authMiddleware.ts";
+import { isAdmin, protect } from "../middlewares/authMiddleware.js";
 import {
   changeOrderStatus,
   confirmSessionId,
   createOrderAndCheckOutSession,
   getAllOrders,
   getOrderByUser,
-} from "../controllers/order.ts";
+} from "../controllers/order.js";
 import {
   confirmSessionIdValidator,
   orderCreateValidator,
   orderIdValidator,
   orderStatusValidator,
-} from "../validators/order.ts";
-import { validateRequest } from "../middlewares/validateRequest.ts";
+} from "../validators/order.js";
+import { validateRequest } from "../middlewares/validateRequest.js";
 
 const router = Router();
 
