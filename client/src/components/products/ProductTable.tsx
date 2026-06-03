@@ -38,7 +38,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { ArrowDownIcon, Settings2 } from "lucide-react";
+import { Settings2 } from "lucide-react";
 
 interface ProductTableProps {
   data: Product[];

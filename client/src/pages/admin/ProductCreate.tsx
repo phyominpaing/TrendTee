@@ -11,7 +11,7 @@ const ProductCreate = () => {
   const onSubmit = async (data: ProductFormInputs) => {
     
     try {
-      const response = await createProduct(data).unwrap();
+      await createProduct(data).unwrap();
 
       toast.success("Product created successfully.");
       navigate("/admin/manage-products");
